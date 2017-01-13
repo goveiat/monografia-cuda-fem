@@ -1,0 +1,71 @@
+\subsubsection{Método das diferenças finitas}
+
+O método das diferenças finitas substitui cada derivada da equação diferencial por um quociente-diferença apropriado,
+\citep[p. 684]{burden_faires}
+isto é, obter aproximações discretas para cada derivada.
+
+Sendo o domínio $ \Omega $ contínuo e limitado em $ x = {a, b} $, o mesmo pode ser discretizado escolhendo-se um valor $ N > 0 $ e dividindo-se o intervalo $ [a, b] $ em $ N + 1 $ subintervalos iguais, os quais são limitados por
+
+\begin{equation}
+  x_i = a + ih,  i = 0, 1, ... N+1
+\end{equation}
+
+O valor do incremento h é dado por 
+
+\begin{equation}
+  h = \frac{b-a}{N+1}
+\end{equation}
+
+Nos pontos interiores $ x_i , com i = 1, 2. .... N $, isto é, dentro da borda $ {a, b} $, a equação diferencial a ser aproximada é
+
+\begin{equation}
+    \label{eq:edo2}
+    y''(x_i) = p(x_i)y'(x_i) + q(x_i)y(x_i) + r(x_i)
+\end{equation}
+
+Deseja-se obter o valor de $ y(x_i) $ como uma média do valor de seus vizinhos $ y(x_i + h) $ e $ y(x_i - h) $. Para tal, utiliza-se a expansão em série de Taylor, como por exemplo, a de ordem 3. A notação do grande O foi utilizada para denotar o erro do truncamento.
+
+\begin{equation}
+    \label{eq:dfr}
+    y(x_i + h) = y(x_i) + hy'(x_i) + \frac{h^{2}}{2}y''(x_i) + \frac{h^{3}}{6}y'''(x_i) + O(h^{4})
+\end{equation}
+
+\begin{equation}
+    \label{eq:dfl}
+    y(x_i - h) = y(x_i) - hy'(x_i) + \frac{h^{2}}{2}y''(x_i) - \frac{h^{3}}{6}y'''(x_i) + O(h^{4})
+\end{equation}
+
+Somando-se as equações \ref{eq:dfr} e \ref{eq:dfl} e isolando a derivada procurada, no caso a de segunda ordem.
+
+\begin{equation}
+    \label{eq:difcent2}
+    y''(x_i) = \frac{1}{h^2}[y(x_i + h) - 2y(x_i) +y(x_i - h)] - O(h^{4})
+\end{equation}
+
+A equação \ref{eq:difcent2} é denomidada fórmula da diferença centrada, pois obtém o valor de um dado ponto a partir do valor de todos os seus vizinhos. De forma similar, para a derivada de primeira ordem, obtém-se
+
+\begin{equation}
+    \label{eq:difcent}
+    y'(x_i) = \frac{1}{2h}[y(x_i + h) - y(x_i - h)] - O(h^{2})
+\end{equation}
+
+Com as derivadas da equação \ref{eq:edo2} definidas, obtém-se então a sua forma discretizada. Os termos de ordem superior relativos ao erro de aproximação, foram desconsiderados na equação \ref{eq:edoDisc}.
+
+\begin{equation}
+    \label{eq:edoDisc}
+   \frac{y(x_i + h) - 2y(x_i) +y(x_i - h)}{h^2} = p(x_i) \frac{y(x_i + h) - y(x_i - h)}{2h} +q(x_i)y(x_i) + r(x_i)
+\end{equation}
+
+
+O resultado obtido em  \ref{eq:edoDisc} pode ser expandido para M dimensões. As equações \ref{eq:lap} e \ref{eq:lapDisc} mostram a equação de laplace em duas dimensões e a mesma equação discretizada.
+
+\begin{equation}
+    \label{eq:lap}
+    \Delta u = \frac{\partial^2 u}{\partial^2 x} + \frac{\partial^2 u}{\partial^2 y} = 0
+\end{equation}
+
+\begin{equation}
+    \label{eq:lapDisc}
+   \frac{u(x + h, y) - 2u(x, y) +u(x - h, y)}{h^2} +
+   \frac{u(x, y + h) - 2u(x, y) +u(x, y - )}{h^2} = 0
+\end{equation}
