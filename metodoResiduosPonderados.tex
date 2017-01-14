@@ -6,7 +6,7 @@ A aproximação de funções por polinômios é uma técnica conhecida, como por
 
 Uma vez que o método opera sobre um domínio $ \Omega $ discretizado, de forma que $ \Omega \approx \sum \Omega_j $, no qual $ \Omega_e $ é um elemento discreto, os polinômios utilizados na aproximação devem ser definidos em partes, para cada elemento.
 
- O somatótrio definido na equação \ref{eq:pppol} aproxima a solução $ u $ de uma equação diferencial ou sistema de equações. As contantes $ c_j $ são variáveis desconhecidas, as quais devem ser encontradas de forma a resolver o problema. As funções $ \phi_j $ são conhecidas e diferenciaveis por partes no domínio $ \Omega $ e respeitam as condições de contorno.
+O somatótrio definido na equação \ref{eq:pppol} aproxima a solução $ u $ de uma equação diferencial ou sistema de equações. As contantes $ c_j $ são variáveis desconhecidas, as quais devem ser encontradas de forma a resolver o problema. As funções $ \phi_j $ são conhecidas e diferenciaveis por partes no domínio $ \Omega $ e respeitam as condições de contorno.
  
 
 \begin{equation}
@@ -20,9 +20,28 @@ Uma vez que o método opera sobre um domínio $ \Omega $ discretizado, de forma 
  	\mathcal{L} u = f
  \end{equation}
  
- Uma vez que $U_N$ aproxima $u$ a relação a seguir é válida, e denotada por residual da aproximação
+ Uma vez que $U_N$ é um resultado aproximado de $u$, mas não necessariamente igual, a relação a seguir é válida e é denotada por residual da aproximação
  
  \begin{equation}
- 	R = \mathcal{L} u - f \neq 0
+ 	R(x, c_j) = \mathcal{L} U_N - f \neq 0
  \end{equation}
+ 
+ De modo a obter a aproximação mais adequada, deve-se minimizar o resíduo da aproximação em todo o domínio. A integral a seguir fornece a fórmula do método dos resíduos ponderados.
+ 
+ \begin{equation}
+	\int_{\Omega} w_i(x)R(x, c_i)dx, \ i = (1, 2, ..., N)
+ \end{equation} 
+ 
+O parâmetro $w_i$ é um conjunto de funções linearmente independentes, chamadas de funções peso.
+\citep[p. 60]{reddy}
 
+Alguns casos especiais do método dos resíduos ponderados são obtidos a partir da escolha do parâmetro $w_i$ 
+
+\begin{equation}
+	\begin{tabular}{ l l }
+	Método de Petrov-Galerkin & $ w_i = \psi_i \neq \phi_i $ \\ 
+	Método de Galerkin & $ w_i = \phi_i $\\  
+	Método dos Mínimos quadrados & $ w_i = \frac{d}{dx} \left(a(x)\frac{d \phi_i}{dx}\right) $ \\ 
+	Método da colocação & $ \delta(x - x_i)  $    ($\delta$ de Dirac)
+	\end{tabular}
+\end{equation}
