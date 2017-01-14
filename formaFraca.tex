@@ -1,0 +1,38 @@
+\subsection{Formulação fraca do Problema}
+
+A forma fraca, ou forma variacional de uma equação diferencial é uma integral ponderada, equivalente à equação diferencial e às suas condições naturais de contorno. Por meio da forma fraca obtem-se um conjunto de equações algébricas relacionadas aos coeficientes desconhecidos ($c_i$). Para diferentes escolhas da função de peso, diferentes equações algébricas serão obtidas.
+\citep[p. 64]{(reddy)}
+
+A obtenção da forma fraca será ilustrada com a equação diferencial a seguir e suas condições de contorno:
+
+\begin{equation}
+	\label{eq:exFFraca}
+	\mathcal{L}u = \frac{d^2 u}{dx^2} = f, \ u(a) = \alpha, \ u(b) = \beta
+\end{equation}
+
+Antes de se aplicar a discretização /interpolação dada em \ref{eq:pppol}, substitui-se o problema contínuo a ser resolvido, na integral dos resíduos ponderados:
+
+\begin{equation}
+	R = \frac{d^2 u}{dx^2} - f = 0
+\end{equation}
+
+ \begin{equation}
+	\int_{a}^{b} w\left(\frac{d^2 u}{dx^2} - f\right) dx = 0
+ \end{equation} 
+ 
+ Integrando por partes:
+ 
+ \begin{equation}
+ \label{eq:fFracaG}
+ \left.w \frac{du}{dx}\right|_{a}^{b} - 
+	\int_{a}^{b} 
+	\frac{du}{dx} \frac{dw}{dx} dx = \int_{a}^{b} wf dx
+ \end{equation} 
+
+A equação \ref{eq:fFracaG} é denominada forma fraca da equação \ref{eq:exFFraca}. Adicionalmente, verifica-se a condição de contorno. Se for considerado que $ w(a) = w(b) = 0$ por exemplo, tem-se
+
+ \begin{equation}
+ \label{eq:fFracaG}
+ - 	\int_{a}^{b} 
+	\frac{du}{dx} \frac{dw}{dx} dx = \int_{a}^{b} wf dx
+ \end{equation} 
