@@ -1,0 +1,13 @@
+\subsection{Método dos Resíduos ponderados}
+
+O método dos elementos finitos consiste em encontrar uma aproximação da solução por meio de polinômios definidos por partes. Dessa forma, o somatótrio definido em \ref{eq:pppol} aproxima a solução $ u $ de uma equação diferencial ou sistema de equações.
+\citep[p. 97]{davis}
+
+\begin{equation}
+	\label{eq:pppol}
+	u(x) \approx U_N (x) = \sum_{j = 1}^{N} c_j \phi_j (x)
+\end{equation}
+
+As contantes $ c_j $ são variáveis desconhecidas, as quais devem ser encontradas de forma a resolver o problema. As funções $ \phi_j $ são conhecidas e diferenciaveis por partes. Tais funções são conhecidas como função base ou função peso. A solução aproximada $ U_N $ consiste portanto
+
+A aproximação de funções por polinômios é uma técnica conhecida, como por exemplo os métodos de interpolação de Newton e Lagrange e a aproximação por série de Taylor. 
