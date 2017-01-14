@@ -6,7 +6,20 @@ Muitos problemas de valor de contorno não podem ser resolvidos por métodos ana
 O método dos elementos finitos, é um método numérico, tal como o método das diferenças finitas, no entanto, é mais genérico e adequado às aplicações do mundo real. Neste método, o domínio do problema é visto como uma coleção de subdomínios, sobre os quais, a equação que modela o problema é aproximada por um método variacional.
 \citep[p. 13]{reddy}
 
-\subsection{Métodos Variacionais}
+
+O método consiste em encontrar uma aproximação da solução por meio de polinômios definidos por partes. Dessa forma, o somatótrio definido em \ref{eq:pppol} aproxima a solução $ u $ de uma equação diferencial ou sistema de equações.
+\citep[p. 97]{davis}
+
+\begin{equation}
+	\label{eq:pppol}
+	u(x) \approx U_N (x) = \sum_{j = 1}^{N} c_j \phi_j (x)
+\end{equation}
+
+As contantes $ c_j $ são variáveis desconhecidas, as quais devem ser encontradas de forma a resolver o problema. As funções $ \phi_j $ são conhecidas e diferenciaveis por partes. Tais funções são conhecidas como função base ou função peso. A solução aproximada $ U_N $ consiste portanto
+
+A aproximação de funções por polinômios é uma técnica conhecida, como por exemplo os métodos de interpolação de Newton e Lagrange e a aproximação por série de Taylor. 
+
+\subsection{Método Variacional}
 Os métodos variacionais são técnicas utilizadas para extremizar o valor de um funcional em um determinado espaço de funções. Por extremizar entende-se encontrar o valor mínimo, máximo ou o ponto de inflexão do funcional.
 
 Um funcional $ I(u) $ é uma regra que associa cada função $ u $ de um domínio $ \Omega $ a um único número real:
