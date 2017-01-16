@@ -1,12 +1,11 @@
 \subsection{Método dos Resíduos ponderados}
 
-O método dos elementos finitos consiste em encontrar uma  solução do problema diferencial por meio da aproximação por polinômios. 
-\citep[p. 97]{davis}
-A aproximação de funções por polinômios é uma técnica conhecida, como por exemplo os métodos de interpolação de Newton e Lagrange e a aproximação por série de Taylor. 
+O método dos elementos finitos consiste em encontrar uma  solução do problema diferencial por meio da aproximação por polinômios 
+\citep[p. 97]{davis}. Uma vez que aproximações geram erros, aqui chamados de resíduos, torna-se necessário reduzir tais resíduos para que se tenha uma aproximação de qualidade.
 
-Uma vez que o método opera sobre um domínio $ \Omega $ discretizado, de forma que $ \Omega \approx \sum \Omega_j $, no qual $ \Omega_e $ é um elemento discreto, os polinômios utilizados na aproximação devem ser definidos em partes, para cada elemento.
+Uma vez que o método opera sobre um domínio $ \Omega $ discreto, tal que $ \Omega \approx \sum \Omega_j $,  os polinômios utilizados na aproximação são definidos por partes no domínio $\Omega$, isto é, são diferentes em apenas um intervalo do domínio.
 
-O somatótrio definido na equação \ref{eq:pppol} aproxima a solução $ u $ de uma equação diferencial ou sistema de equações. As contantes $ c_j $ são variáveis desconhecidas, as quais devem ser encontradas de forma a resolver o problema. As funções $ \phi_j $, chamadas de funções de forma, são conhecidas e diferenciaveis por partes no domínio $ \Omega $ e respeitam as condições de contorno, ou seja $ \phi_j(a) = \phi_j(b) = 0 $
+O somatótrio definido na equação \ref{eq:pppol} aproximação da solução $ u $ de uma equação diferencial. As contantes $ c_j $ são os coeficientes desconhecidos e as funções $ \phi_j $, chamadas de funções de forma, são conhecidas, diferenciaveis por partes no domínio $ \Omega $ e de respeitam as condições de contorno, ou seja $ \phi_j(a) = \phi_j(b) = 0 $. 
  
 
 \begin{equation}
@@ -14,20 +13,21 @@ O somatótrio definido na equação \ref{eq:pppol} aproxima a solução $ u $ de
 	u(x) \approx U_N (x) = \sum_{j = 1}^{N} c_j \phi_j (x)
 \end{equation}
 
- Seja a equação denotada com o operador diferencial $ \mathcal{L} $, tal que
+Considere a forma geral da equação diferencial a ser resolvida, indicada pelo operador diferencial $ \mathcal{L} $:
  
  \begin{equation}
+ 	\label{eq:opDif}
  	\mathcal{L} u = f
  \end{equation}
  
- Uma vez que $U_N$ é um resultado aproximado de $u$, mas não necessariamente igual, a relação a seguir é válida e é denotada por residual da aproximação
+ Uma vez que $U_N$ é um resultado aproximado de $u$, mas não necessariamente igual, a desigualdade a seguir é válida e conhecida como \textbf{residual da aproximação}.
  
  \begin{equation}
+ \label{eq:residuo}
  	R(x, c_j) = \mathcal{L} U_N - f \neq 0
  \end{equation}
  
- De modo a obter a aproximação mais adequada, deve-se minimizar o resíduo da aproximação em todo o domínio. A integral a seguir fornece a fórmula do método dos resíduos ponderados.
- 
+ De modo a obter a aproximação mais adequada, deve-se minimizar o resíduo da aproximação em todo o domínio. Uma vez que não se pode requerer que os resíduos de todos os subdomínios sejam zero, como mostrado na equação ~\ref{eq:residuo}, faz-se a ponderação dos mesmos por meio de funções $w$ de forma a atender a condição residual dada a seguir:
  \begin{equation}
  \label{eq:intResPond}
 	\int_{\Omega} w_i(x)R(x, c_i)d\Omega = 0, \ i = (1, 2, ..., N)
