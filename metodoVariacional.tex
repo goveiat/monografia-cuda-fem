@@ -1,51 +1,48 @@
 \subsection{Método Variacional}
 Os métodos variacionais são técnicas utilizadas para extremizar o valor de um funcional em um determinado espaço de funções. Por extremizar entende-se encontrar o valor mínimo, máximo ou o ponto de inflexão do funcional.
+Sistemas físicos, segundo o princípio de Hamilton ou princípio da mínima ação, tendem a minimizar sua energia interna ao realizar trabalho. Dessa forma, problemas envolvendo modelos matemáticos podem ser resolvidos considerando-se o problema de minimização de energia equivalente. (\textbf{Nota:} Um apêndice sobre elasticidade plana, princípio de Hamilton e análise funcional deve ser acrescentado).
 
-Um funcional $ I(u) $ é uma regra que associa cada função $ u $ de um domínio $ \Omega $ a um único número real:
+Um funcional $ I(y) $ é uma regra que associa cada função $ u $ de um domínio $ \Omega $ a um único número real:
 
 \begin{equation}
-I : u \rightarrow \Re
+I : y \rightarrow \Re
 \end{equation}
 
-Em linhas gerais, pode ser entendido como uma função de funções. Um exemplo típico de funcional é a integral definida a seguir, a qual mapeia a função $ u(x) $ em um valor real.
+Em linhas gerais, pode ser entendido como uma função de funções. Um exemplo típico de funcional é a integral definida a seguir, a qual mapeia a função $ y $ em um valor real.
 
 \begin{equation}
 \label{eq:funcional}
 I = \int_{a}^{b} u(y, y', x) dx
 \end{equation}
 
-Se uma função $ y(x) $ , por exemplo, minimiza o funcional, qualquer variação infinitesimal $ \alpha $ em $ y(x) $ produzirá um valor maior no funcional $ I $, o qual não satisfaz a condição de mínimo.
+Se uma função $ y(x) $ , por exemplo, minimiza o funcional, qualquer variação infinitesimal $ \alpha $ em $ y(x) $ produzirá um valor maior no funcional $ I $, o qual deixará de satisfazer a condição de mínimo. O operador variacional $ \delta $ desloca a função $ y $ em uma distância igual a $ \alpha \eta(x) $, sendo $ \alpha $ uma constante que tende a zero e $ \eta $ uma função suave definida em $[a,b]$, tal que $\eta(a) = \eta(b) = 0$.
 
-\begin{equation}
-\delta y(x) = \alpha \eta(x), \ \  \alpha \rightarrow 0
-\end{equation}
-
-O operador variacional $ \delta $ desloca a função $ u $ em uma distância igual a $ \alpha \eta(x) $. O parâmetro $ \alpha $ do incremento é uma constante pequena e a função $ \eta $ , da mesma forma que $ y $, é definida em $[a,b]$, sendo $\eta(a) = \eta(b) = 0$.
-
-Assim, tem-se 
+Assim, tem-se: 
 
 \begin{equation}
 	\label{eq:sisEta}
 	\begin{cases}
         y(x, \alpha) = y(x) + \alpha \eta(x) \\
         y(x, \alpha)' = y(x)' + \alpha \eta'(x) \\
+		\alpha \eta(x) = \delta y(x) \\   
+		\alpha \eta'(x) = \delta y'(x) \\  
     \end{cases}
 \end{equation}
 
-Se substituirmos as equações de \ref{eq:sisEta} em \ref{eq:funcional} o valor do funcional passa relacionar tanto a função $ y $ quanto as suas aproximações a partir dos parâmetros $ \alpha $ e $ \eta $.
+Se substituirmos as equações de \ref{eq:sisEta} em \ref{eq:funcional} o valor do funcional passa depender tanto da função $ y $ quanto de suas variações, realizadas pelo parâmetro $ \alpha $.
 
 \begin{equation}
 \label{eq:funcionalVar}
 I(\alpha) = \int_{a}^{b} u(y(x, \alpha), y'(x, \alpha), x) dx
 \end{equation}
 
-A variação do funcional $ I $, pode ser denotada a partir da diferença entre o funcional deslocado em $ \alpha $ e o funcional sem o deslocamento, considerando que $\alpha $ tende a zero.
+A variação do funcional $ I $, pode ser entendida em termos diferenciais, como a derivada do funcional em relação ao incremento $\alpha$ da variação.
 
 \begin{equation}
-\delta I = I(\alpha) - I(0) = \frac{\partial I}{\partial \alpha}
+\delta I = \frac{\partial I}{\partial \alpha}
 \end{equation}
 
-O valor extremo procurado (mínimo, máximo ou ponto de inflexão) é caracterizado por possuir a primeira derivada igual a zero, portanto
+O valor extremo procurado (mínimo, máximo ou ponto de inflexão) é caracterizado por possuir a primeira derivada igual a zero, portanto:
 
 \begin{equation}
 \delta I = \frac{\partial}{\partial \alpha} \int_{a}^{b} u(y(x, \alpha), y'(x, \alpha), x) dx = 0
@@ -66,7 +63,7 @@ Das equações em \ref{eq:sisEta} tem-se
 \end{split}
 \end{equation}
 
-Integrando separadamente o segundo termo por partes tem-se
+É importante notar que a variação ocorre apenas no conjunto imagem do funcional, assim $\frac{\partial{x}}{\partial{\alpha}} = 0$. Integrando separadamente o segundo termo por partes tem-se:
 
 \begin{equation}
 \begin{split}
@@ -76,7 +73,7 @@ Integrando separadamente o segundo termo por partes tem-se
 \end{split}
 \end{equation}
 
-Uma vez que $\eta(a) = \eta(b) = 0$, o valor de $ \delta I $ é dado por
+Uma vez que a variação no contorno é zero (fronteiras fixas), $\eta(a) = \eta(b) = 0$, o valor de $ \delta I $ é dado por:
 
 \begin{equation}
 \label{eq:intEuler}
@@ -94,4 +91,4 @@ Sendo $ \eta $ uma função derivável em $ [a,b] $, para que a igualdade \ref{e
 \frac{\partial u}{\partial y'} = 0, \ a < x < b
 \end{equation}
 
-Do conjunto de funções admissíveis, a única função que minimiza o funcional dado em \ref{eq:funcional}, e que portanto satisfaz às condições do modelo, é a mesma que resolve a equação \ref{eq:euler}, conhecida como Equação de Euler-Lagrange.
+Do conjunto de funções admissíveis, a única função que minimiza o funcional $I$  e portanto a energia interna do processo físico, é a mesma que resolve a equação \ref{eq:euler}, conhecida como Equação de Euler-Lagrange.
