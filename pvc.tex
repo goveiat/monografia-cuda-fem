@@ -22,7 +22,7 @@ De forma análoga, o PVC é definido a partir da equação que modela o processo
 
 \begin{equation}
 	\begin{cases}
-		y'' + p(x)y' + q(x)y = f(x) \\
+		y''(x) + p(x)y'(x) + q(x)y(x) = f(x) \\
 		y(x_i) = \alpha \\
 		y'(x_f) = \beta
 	\end{cases}
@@ -51,4 +51,37 @@ Tal complexidade pode ocorrer, por exemplo, com a existência de coeficientes va
 \citep[p. 410]{powers}.
 
 Métodos numéricos apropriados podem ser utilizados na obtenção de uma solução aproximada para tais problemas. Neste trabalho serão abordados o \textbf{Método das Diferenças Finitas (MDF)} e o \textbf{Método dos Elementos Finitos (MEF)}.
+
+A fim ilustrar o PVC, considere o seguinte exemplo  unidimensional, no qual um dado domínio $ \Omega $, contido no conjunto dos números reais, é limitado por uma borda $\Gamma$. 
+
+\begin{equation}
+	\begin{cases}
+		\Omega = [a, b]  \\
+		\Gamma = \{ a, b \} 
+	\end{cases}
+\end{equation}
+
+Um PVC aplicado sobre a região $\Omega \cup \Gamma$ pode ser então dado pelo sistema a seguir. A parte $\Gamma_D$ da fronteira possui condição de contorno de Dirichlet, enquanto a parte $\Gamma_N$ possui condição de Neumann. Portanto, tem-se que $\Gamma = \Gamma_D \cup \Gamma_N$.
+
+\begin{equation}
+	\begin{cases}
+		\begin{tabular}{l l}
+			$y''(x) = p(x)y'(x) + q(x)y(x) + r(x)$ 
+			& em $\Omega$  \\
+			$y(a) = \alpha$ 
+			& em $\Gamma_D$  \\
+			$y'(b) = \beta$ 
+			& em $\Gamma_N$
+		\end{tabular}
+	\end{cases}
+\end{equation}
+
+Resolver este problema consiste em encontrar a curva do modelo que satisfaz às condições de contorno. Um exemplo de curva solução é dado na figura \ref{fig:pvc}. É importante notar que, dependendo do modelo e das condições adicionais, um PVC pode possuir uma, nenhuma ou múltiplas soluções. Este comportamento se assemelha ao de equações algébricas lineares \citep[p. 448]{boyce_diprima}. Conforme o princío de Hadamard, o problema é dito \textbf{bem posto} se tiver solução única, caso contrário, será dito \textbf{mal posto}.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.5]{figuras/pvc.png}
+\caption{PVC: Encontrar a curva solução entre os pontos $ (a, \alpha) $ e $ (b, \beta) $}
+\label{fig:pvc}
+\end{figure}
 
