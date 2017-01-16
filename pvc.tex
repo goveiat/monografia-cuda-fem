@@ -3,9 +3,9 @@
 
 A solução de um problema regido por um modelo matemático depende de informações ligadas ao contexto em que tal problema ocorre.
 Estas informações podem dizer a respeito das condições iniciais ou das condições de contorno. 
-Condições iniciais caracterizam um Problema de Valor Inicial (PVI) e geralmente são relativas ao instante de tempo inicial do processo.
-As condições de contorno por sua vez, caracterizam um Problema de Valor de Contorno (PVC) e  normalmente são dadas em função do limite espacial do processo em questão.
-\citep[p. 447]{boyce_diprima}
+Condições iniciais caracterizam um \textbf{Problema de Valor Inicial (PVI)} e geralmente são relativas ao instante de tempo inicial do processo.
+As condições de contorno por sua vez, caracterizam um \textbf{Problema de Valor de Contorno (PVC)} e  normalmente são dadas em função do limite espacial do processo em questão
+\citep[p. 447]{boyce_diprima}.
 Desta forma, enquanto os PVI geralmente relatam processos transientes, isto é, variantes no tempo, os PVC lidam com problemas em estado estacionário.
 
 O PVI de um modelo de ordem $N$ é composto da equação do processo e do valor inicial da variável dependente e de suas derivadas, até a ordem $N-1$, como mostra a equação a seguir:
@@ -31,7 +31,7 @@ De forma análoga, o PVC é definido a partir da equação que modela o processo
 Portanto, se as condições adicionais forem dadas em um único instante (ou ponto), tem-se o PVI do processo. Caso sejam dadas em dois ou mais pontos distintos, tem-se o PVC.
 
 As condições de contorno usualmente podem ser classificadas como condições de Dirichlet ou de Neumann. 
-As condições de Dirichlet são também conhecidas como essenciais e são estabelecidas sobre a variável dependente. Já as condições de Neumann são condições naturais e são impostas sobre a derivada a variável dependente. A seguir são dados alguns exemplos.
+As \textbf{condições de Dirichlet} são também conhecidas como \textbf{essenciais} e são estabelecidas sobre a variável dependente. Já as \textbf{condições de Neumann} são condições \textbf{naturais} e são impostas sobre as derivadas da variável dependente. A seguir são dados alguns exemplos.
 
 \begin{equation}
 	\begin{tabular}{l l}
@@ -46,55 +46,9 @@ As condições de Dirichlet são também conhecidas como essenciais e são estab
 	\end{tabular}
 \end{equation}
 
+A resolução analítica de PVC, ou mesmo de PVI, se torna impraticável à medida em que a complexidade do modelo, ou do contexto em que ele ocorre, aumenta.
+Tal complexidade pode ocorrer, por exemplo, com a existência de coeficientes variáveis, regiões irregulares ou com condições de contorno inadequadas, existência de interfaces ou devido à grande quantidade de detalhes do problema
+\citep[p. 410]{powers}.
 
+Métodos numéricos apropriados podem ser utilizados na obtenção de uma solução aproximada para tais problemas. Neste trabalho serão abordados o \textbf{Método das Diferenças Finitas (MDF)} e o \textbf{Método dos Elementos Finitos (MEF)}.
 
-
-Dado o domínio $ \Omega $ tal que
-
-\begin{equation}
-  \Omega \subset \Re^{n}
-\end{equation}
-
-Os valores na fronteira $ \partial \Omega $ do domínio são definidos por uma função $ u(x, y) $ tal que
-
-\begin{equation}
-  u(x, y) = f(x, y),  \forall (x, y) \in \partial \Omega
-\end{equation}
-
-Assim, conhecendo-se os valores na borda, é possível inferir o conjunto de funções em $ \Omega $ que seja solução do modelo. 
-
-De forma a exemplificar, considere o caso simples, em que o domínio $ \Omega $ seja um intervalo aberto em $ \Re $ e os pontos da fronteira sejam os extremos deste intervalo: 
-
-\begin{equation}
-  [a, b] \subset \Re
-\end{equation}
-
-\begin{equation}
-  \Omega = [a, b]
-\end{equation}
-
-\begin{equation}
-  \partial [a, b] = \{ a, b \}
-\end{equation}
-
-Um problema de valor de contorno definido sobre este domínio é portanto, composto pela equação que modela o comportamento do processo e pelas condições adicionais de contorno
-
-
-\begin{equation}
-    \label{eq:pvc}
-    PVC : 
-    \begin{cases}
-        y'' = f(x, y, y') \\
-        y(a) = \alpha \\
-        y(b) = \beta
-    \end{cases}
-\end{equation}
-
-Conforme mostra a figura ~\ref{fig:pvc}, a solução para o exemplo dado, consiste em encontrar a curva ou o conjunto de curvas que obedeçam às condições de contorno.
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[scale=0.8]{figuras/PVC.png}
-\caption{PVC: Encontrar a curva solução entre os pontos $ \alpha $ e $ \beta $}
-\label{fig:pvc}
-\end{figure}
