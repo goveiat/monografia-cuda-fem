@@ -21,6 +21,7 @@ A aplicação do MEF compreende basicamente três etapas: pré-processamento, an
 
 
 \subsubsection{Pré-Processamento}
+
 A etapa de pré-processamento compreende a maior parte do tempo de modelagem do método. É neste ponto do processo que se são definidos os apectos geométricos do modelo, as propriedades dos materiais do objeto de estudo e a aplicação das condições de contorno ou condições iniciais.
 
 \paragraph{Aspectos geométricos \\} 
@@ -76,22 +77,13 @@ Considere um capacitor de placas paralelas, no qual uma das armaduras é submeti
 \label{fig:capacitor}
 \end{figure}
 
-\subsection{Abordagem Direta}
+\subsubsection{Processamento ou Análise de Elementos Finitos}
+A etapa de processamento de elementos finitos consiste na elaboração de funções aproximadas para o modelo em questão. Essas aproximações devem ser feitas dentro de cada sub-domínio do sistema. A forma forte do problema é geralmente fornecida como uma equação ou sistemas de equações diferenciais e deve ser transformada no processamento em um conjunto de equações algébricas contínuas por partes.
 
-A abordagem direta, abordagem física ou formulação de deslocamentos foi a primeira tentativa de se modelar um problema físico em termos de elementos finitos.
+\paragraph{Funcionamento do método \\}
+Existem diferentes técnicas para a obtenção da forma fraca de uma equação diferencial. Os métodos tradicionalmente utilizados no MEF são os métodos de Ritz (Variacional) e de Galerkin (Resíduos ponderados). Mesmo com estes diferentes caminhos, os quais serão vistos mais à frente, FEM possui uma interpretação única, independente da  técnica de aproximação utilizada. 
 
-Voltada para a análise de estruturas e problemas de elasticidade, esta técnica busca aproximar o comportamento de um problema contínuo, por meio de elementos finitos, que se comporte de maneira similar a elementos reais discretos.
-\citep[p. 19]{zien}
-
-A partir desta abordagem, a forma fraca do problema diferencial é obtida com o uso do princípio dos trabalhos virtuais.
-\citep[p. 20]{zien}
-
- 
-
-
-\subsubsection{Função de deslocamentos}
-
-A fim de aprensentar a formulação de deslocamentos, considere uma malha bidimensional qualquer como a apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma estrutura metálica, de dutos de um fluido ou até mesmo um circuito elétrico, como apresentado na figura \ref{fig:repMalhaGenerica}.
+Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma ponte metálica, de dutos de um fluido ou até mesmo um circuito elétrico, como apresentado na figura \ref{fig:repMalhaGenerica}.
 \begin{figure}[!htb]
 \centering
 \includegraphics[scale=0.5]{figuras/temp.png}
@@ -107,4 +99,75 @@ A fim de aprensentar a formulação de deslocamentos, considere uma malha bidime
 \end{figure}
 
 
- Fazendo uma analogia com uma estrutura metálica, conforme apresentado na figura \ref{fig:repMalhaGenerica}-a, as forças que atuam nos nós, são unicamente definidas pelo deslocamento destes nós 
+ Fazendo uma analogia com uma estrutura metálica, conforme apresentado na figura \ref{fig:repMalhaGenerica}-a, as forças que atuam nos nós, podem ser definidas  a a partir dos deslocamento destes nós, da distribuição da carga sobre um dado elemento e da tensão inicial, caso haja.
+ 
+ Supondo que um carregamtno $p$ atue sobre o elemento $1$, as forças que atuam sobre os nós deste elemento podem ser dadas por:
+ 
+ 
+ \begin{equation}
+ 	\label{eq:forca}
+ 	\begin{tabular}{c c}
+ 	$q_1 = 
+		\left \{
+ 		\begin{tabular}{c}
+	 		$q_1^1$ \\
+	 		$q_2^1$ \\
+	 		$q_3^1$
+  		\end{tabular} 		
+		\right \}$
+		\
+ 	$q_1^1 = 
+		\left \{
+ 		\begin{tabular}{c}
+	 		$U_1$ \\
+	 		$V_1$
+  		\end{tabular} 		
+		\right \}	$
+		\end{tabular} 	
+ \end{equation}
+
+
+Similarmente, os deslocamentos podem ser dados para cada nó do elemento. Se as componentes da força na direção de x e y são dadas como U e V, as componentes da força podem ser dadas em função dessas componentes de deslocamento.
+
+ \begin{equation}
+ 	\label{eq:desloc}
+ 	\begin{tabular}{c c}
+ 	$u_1 = 
+		\left \{
+ 		\begin{tabular}{c}
+	 		$u_1^1$ \\
+	 		$u_2^1$ \\
+	 		$u_3^1$
+  		\end{tabular} 		
+		\right \}$
+		\
+ 	$u_1^1 = 
+		\left \{
+ 		\begin{tabular}{c}
+	 		$u_1(U_1)$ \\
+	 		$v_1(V_1)$
+  		\end{tabular} 		
+		\right \}	$
+		\end{tabular} 	
+ \end{equation}
+
+
+Assumindo um material isotrópico, cujo comportamento é linear elástico, a lei de Hooke fornece a equação \ref{eq:hooke}
+
+ \begin{equation}
+ 	\label{eq:hooke}
+	\textbf{$q^1 = K^1 u^1 + f^1$}
+ \end{equation}
+
+\paragraph{Abordagem Direta}
+
+A abordagem direta, abordagem física ou formulação de deslocamentos foi a primeira tentativa de se modelar um problema físico em termos de elementos finitos.
+
+Voltada para a análise de estruturas e problemas de elasticidade, esta técnica busca aproximar o comportamento de um problema contínuo, por meio de elementos finitos, que se comporte de maneira similar a elementos reais discretos.
+\citep[p. 19]{zien}
+
+A partir desta abordagem, a forma fraca do problema diferencial é obtida com o uso do princípio dos trabalhos virtuais.
+\citep[p. 20]{zien}
+
+ 
+
