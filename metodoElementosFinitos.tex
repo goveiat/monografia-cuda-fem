@@ -80,8 +80,9 @@ Considere um capacitor de placas paralelas, no qual uma das armaduras é submeti
 \subsubsection{Processamento ou Análise de Elementos Finitos}
 A etapa de processamento de elementos finitos consiste na elaboração de funções aproximadas para o modelo em questão. Essas aproximações devem ser feitas dentro de cada sub-domínio do sistema. A forma forte do problema é geralmente fornecida como uma equação ou sistemas de equações diferenciais e deve ser transformada no processamento em um conjunto de equações algébricas contínuas por partes.
 
-\paragraph{Funcionamento do método \\}
-Existem diferentes técnicas para a obtenção da forma fraca de uma equação diferencial. Os métodos tradicionalmente utilizados no MEF são os métodos de Ritz (Variacional) e de Galerkin (Resíduos ponderados). Mesmo com estes diferentes caminhos, os quais serão vistos mais à frente, FEM possui uma interpretação única, independente da  técnica de aproximação utilizada. 
+\paragraph{Funções sobre o espaço discreto \\}
+
+Nesta seção será apresentada a visão geral do método. Para tal, os conceitos de formulação forte e fraca não serão necessários, visto que os problemas aqui descritos são modelados por sistemas lineares e não por equações diferenciais. Assim sendo, o MEF pode ser aplicado diretamente ao problema, sem a necessidade de se obter a forma integral (forma fraca) a partir de técnicas à relaxação da forma forte, como por exemplo o princípio dos trabalhos virtuais (abordagem direta), o método de Ritz (abordagem Variacional) e de Galerkin (abordagem por Resíduos ponderados).
 
 Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma ponte metálica, de dutos de um fluido ou até mesmo um circuito elétrico, como apresentado na figura \ref{fig:repMalhaGenerica}.
 \begin{figure}[!htb]
@@ -158,6 +159,84 @@ Assumindo um material isotrópico, cujo comportamento é linear elástico, a lei
  	\label{eq:hooke}
 	\textbf{$q^1 = K^1 u^1 + f^1$}
  \end{equation}
+ 
+ O vetor $q$ representa as forças induzidas pelos deslocamentos $u$ dos nós. A matriz $K$ é a matriz de rigidez ou matriz de coeficientes do problema. $f$ é a força ou tensão inicial do elemento. Caso o estado inicial do elemento seja de equilíbrio, $f$ é igual a zero.
+ 
+ Para que a representação seja adequada é necessário que sejam estabelecidas condições de compatibilidade de deslocamentos e equilíbrio.
+ 
+ A compatibilidade de deslocamento é necessária, uma vez que quando um nó de um elemento é deslocado em uma direção, os elementos vizinhos que compartilham o mesmo nó também são afetados com este deslocamento. Esta condição é satisfeita aos se relacionar todas as forças do sistema.
+ 
+ \paragraph{Montagem do Sistema Global}
+ 
+ Para que o conjunto de funções de força ou tensão sobre os subdomínios sejam corretamente agregadas em um sistema global, é necessário se estabelecer as condições de compatibilidade de deslocamento e de equilíbrio.
+ 
+ Como um nó de um elemento é compartilhado com os elementos vizinhos, a compatibilidade dos deslocamentos ocorre por meio da montagem de um sistema global. Este sistema possibilita que todos os deslocamentos estejam relacionados entre si.
+ 
+  A figura \ref{fig:loc2glob} mostra a transformação dos sistemas locais para um sistema com referências globais. Como todos os nós são relacionados entre si, a matriz de rigidez é quadrada e também simétrica para o caso de materiais isotrópicos.
+  
+  \begin{figure}[!htb]
+  \centering
+  \includegraphics[scale=0.5]{figuras/temp.png}
+  \caption{}
+  \label{fig:loc2glob}
+  \end{figure}
+  
+  O sistema em \ref{eq:assembly} mostra a relação entre todos os pontos do domínio para um dado elemento. é importante notar que apenas elementos adjacentes se afetam mutuamente.
+  
+ \begin{equation}
+ 	\label{eq:assembly}
+ 	\begin{tabular}{c c c}
+ 	$q^e = 
+		\left \{
+ 		\begin{tabular}{c}
+	 		$q^e_1$ \\
+	 		$q^e_2$ \\
+	 		\vdots \\
+	 		$q^e_m$
+  		\end{tabular} 		
+		\right \}$
+		\
+ 	$u^e = 
+		\left \{
+ 		\begin{tabular}{c}
+	 		$u_1$ \\
+	 		$u_2$ \\
+	 		\vdots \\
+	 		$u_m$
+  		\end{tabular} 		
+		\right \}	$
+		\
+		$K^e =
+		\begin{bmatrix}
+		    K^e_{11} 	& K^e_{12}  & \dots 	& K^e_{1m} \\
+		    K^e_{11} 	& \ddots  & \ 	& \vdots \\
+		    \vdots 	& \vdots  	 & \ 	& \vdots \\
+		    K^e_{m1} 	& \dots   & \dots 	& K^e_{mm} 
+		\end{bmatrix}	 $		
+	\end{tabular} 
+ \end{equation}
+ 
+ Com os deslocamento relacionados em todos os pontos elementos do sistema,
+ a condição de equilíbrio é satisfeita quando o somatório das forças causadoras de tais deslocamentos nula, ou seja, a resultante em um dado ponto $a$ vale zero.
+ 
+  \begin{equation}
+  	\label{eq:somaForcas}
+ 	\sum_{e=1}^{m}{q_a^e = q_a^1 + q_a^2 + \dots = 0}
+  \end{equation}
+  
+  Considerando que o corpo está inicialmente em equilíbrio, ou seja, $f = 0$, o sistema como um todo pode ser representado como 
+  
+    \begin{equation}
+    	\label{eq:equilibrio}
+    	q =
+   		\sum_{b=1}^{n}\sum_{e=1}^{m}{K_{ab}^e u_b = 0}
+    \end{equation}
+    
+    
+\paragraph{Atribuição das condições de Contorno}
+A atribuição dos valores de contorno da variável $u$ consiste na especificação dos deslocamentos ou deformações prefixadas no sistema. No exemplo \ref{fig:repMalhaGenerica}-a, como análise estrutural, as condições de contorno são os deslocamentos nulos nos nós prefixados. Fazendo a análise como uma associação de resistores em \ref{fig:repMalhaGenerica}-b, por exemplo, as condições de contorno são as a tensões fornecidas por uma bateria.
+
+A inserção de valores de contorno no sistema promove a redução do número de equações, por meio da eliminação de linhas e colunas cujo valor de $u$ já foi especificado.
 
 \paragraph{Abordagem Direta}
 
