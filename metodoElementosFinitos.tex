@@ -233,12 +233,41 @@ Assumindo um material isotrópico, cujo comportamento é linear elástico, a lei
     \end{equation}
     
     
-\paragraph{Atribuição das condições de Contorno}
-A atribuição dos valores de contorno da variável $u$ consiste na especificação dos deslocamentos ou deformações prefixadas no sistema. No exemplo \ref{fig:repMalhaGenerica}-a, como análise estrutural, as condições de contorno são os deslocamentos nulos nos nós prefixados. Fazendo a análise como uma associação de resistores em \ref{fig:repMalhaGenerica}-b, por exemplo, as condições de contorno são as a tensões fornecidas por uma bateria.
+\paragraph{Atribuição das condições de Contorno \\}
+A atribuição dos valores de contorno da variável $u$ consiste na especificação dos deslocamentos ou deformações prefixadas no sistema. No exemplo \ref{fig:repMalhaGenerica}-a, como análise estrutural, as condições de contorno podem ser os deslocamentos nulos impostos nós fixados (soldados) ou condições iniciais de tensão ou torção. a equação \ref{eq:condIni} exemplifica a atribuição dessas condições.
 
-A inserção de valores de contorno no sistema promove a redução do número de equações, por meio da eliminação de linhas e colunas cujo valor de $u$ já foi especificado.
+\begin{equation}
+   	\label{eq:condIni}
+ 	u_1 = u_6 = 
+		\left \{
+ 		\begin{tabular}{c}
+	 		$0$ \\
+	 		$0$ \\
+  		\end{tabular} 		
+		\right \}	
+\end{equation}
 
-\paragraph{Abordagem Direta}
+A inserção de valores de contorno no sistema promove a redução do número de equações de equilíbrio, por meio da eliminação das linhas cujo valor de $u$ já foi especificado.
+
+\paragraph{Exemplo \\}
+
+A fim de exemplificar a etapa de processamento,  considere a malha de resistores introduzidas  em \ref{fig:repMalhaGenerica}-b. Neste caso, as condições de contorno são as a tensões fornecidas por uma bateria.
+
+\subsubsection{Pós-Processamento}
+A etapa de pós processamento consiste na apresentação dos resultados obtidos no processamento e na determinação de variáveis secundárias a partir destes resultados.
+
+A apresentação da solução pode ser feita graficamente por diferentes técnicas, como curvas de nível, mapas vetoriais, sobreposição de imagens e animações. Alguns exemplos são dados na figura \ref{fig:graf}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.5]{figuras/temp.png}
+\caption{}
+\label{fig:graf}
+\end{figure}
+
+Com base nos valores apresentados no pós processamento, novas decisões são tomadas, tanto para otimizar os resultados quanto para melhorar a performance.
+
+\subsection{Abordagem Direta \\}
 
 A abordagem direta, abordagem física ou formulação de deslocamentos foi a primeira tentativa de se modelar um problema físico em termos de elementos finitos.
 
