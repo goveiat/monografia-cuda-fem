@@ -29,10 +29,11 @@ As primeiras formulações do MEF são conhecidas como \textbf{abordagem direta}
 \subsection{Sistema de Elementos Discretos}
 \citep[p. 68]{desai} introduz o conceito de Método de Elementos Discretos (MED) como sendo uma etapa intermediária da formulação física MEF. Na representação em elementos discretos, cada elemento é unidimensional, de tal forma que o sistema completo é representado por uma estrutura aramada, conforme mostra a figura \ref{fig:arame}.
 
-De forma similar, \citep[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) como uma forma unificada  de analisar problemas de natureza discreta.
+De forma similar, \citep[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) como uma forma unificada de analisar problemas de natureza discreta.
 
+Em ambos os casos, os sistemas originais não se tratam de um contínuo, propriamente dito, mas de um sistema composto por partes, no entanto, são muito úteis na compreensão do funcionamento do MEF e do conceito de elemento.
 
-Estas abordagens são úteis na compreensão do funcionamento do MEF e do conceito de elemento.
+Na subseção a seguir, um modelo de elementos discretos representando uma associação de resistores será apresentado e resolvido.
 
 \begin{figure}[!htb]
 \centering
@@ -43,8 +44,6 @@ Estas abordagens são úteis na compreensão do funcionamento do MEF e do concei
 
 
 
-Chamado de 
- Sistemas discretos podem ser entendidos como a associação de partes funcionais para a formação de uma estrutura
 
 
 \subsection{Etapas de Processamento}
@@ -59,27 +58,29 @@ Cada etapa apresenta uma contribuição para que se obtenha um resultado satisfa
 \citep[p. 665, 666]{zien}
 
 
-A seguir cada etapa é vista em detalhes e exemplificada com um sistema discreto padrão.
+A seguir cada etapa é vista em detalhes e exemplificada com um sistema de elementos discretos.
 
 \subsubsection{Pré-Processamento}
 
-A etapa de pré-processamento compreende a maior parte do tempo de modelagem do método. É neste ponto do processo que se são definidos os apectos geométricos do modelo, as propriedades dos materiais do objeto de estudo e a aplicação das condições de contorno ou condições iniciais.
+A etapa de pré-processamento compreende a maior parte do tempo de modelagem do método. É neste ponto do processo que se são definidos os apectos geométricos do modelo, as propriedades dos materiais do objeto em análise e a aplicação das condições de contorno. \citep[p. 9, 665]{zien}
 
 \paragraph{Aspectos geométricos \\} 
-A definição dos aspectos geométricos consiste na tranformação do domínio contínuo $\Omega$ em uma malha de elementos finitos. Cada elemento $\Omega_e$ dessa malha é um subdomínio de $\Omega,$. A figura \ref{fig:malhas} contém a representação de diferentes malhas propostas para o mesmo dominio $\omega$. A primeira e a segunda malha são uniformes, pois contém elementos de um único tipo, triângulos ou quadradados. Já a terceira malha é mista, pois apresenta elementos de ambos os tipos. 
+A definição dos aspectos geométricos consiste na tranformação do domínio contínuo $\Omega$ em uma malha de elementos finitos. Cada elemento $\Omega_e$ dessa malha será tratado como um subdomínio de $\Omega,$.  
+Nesta etapa são definidas a forma, o número e o tamanho dos elementos, de forma que a representação seja a mais próxima possível do objeto em análise \citep[p. 154]{desai}.
+A figura \ref{fig:elementos} contém a representação de elementos tipicamente utilizados em 1, 2 e 3 dimensões. 
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[scale=0.5]{figuras/temp.png}
-\caption{Diferentes malhas para o domínio $\Omega$}
-\label{fig:malhas}
+\caption{Elementos em 1, 2 e 3 dimensões}
+\label{fig:elementos}
 \end{figure}
 
-Cada elemento pode ser identificado na malha a partir de um número que lhe é atribuído. Na figura \ref{fig:numeracao}, os números entre parêntesis identificam os elementos.
+Conforme pode ser visto na figura \ref{fig:numeracao}, cada elemento pode ser identificado na malha a partir de um número que lhe é atribuído. De forma similar, os vértices (ou nós) também são numerados. Cada nó possui dois valores vinculados a ele. 
+O primeiro número de cada par ordenado representa a numeração global nó, ou seja, a identificação do nó na malha. O segundo número do par ordenado é a numeração do nó dentro de um dado elemento (Identificação local). A numeração local é geralmente feita no sentido anti-horário, a fim de se obter um valor positivo no cálculo da área ou volume por meio do  determinante \citep[p. 394]{sadiku}. 
 
-Os vértices de uma elemento são chamados de nós. cada nó possui dois números vinculados a ele. Os índices na cor azul representam a numeração do nó dentro de um dado elemento (Identificação local). Os índices em vermelho por sua vez são os identificadores globais dos nós ao longo de toda a malha. Cada nó apresenta um determinado grau de liberdade dado pelo número máximo de componentes de um deslocamento. No exemplo de duas dimensões, cada nó tem no máximo 2 graus de liberdade, pois podem se deslocar nas direções de x e de y. O nó 1, no entanto, não apresenta graus de liberdade, pois está fixo. 
+Um fator que deve ser levado em consideração é o balanceamento entre o refinamento da malha e o esforço computacional necessário \citep[p. 154]{desai}. Como o valor da solução é aproximado para cada elemento, o excesso de elementos pode causar a propagação do erro de aproximação, levando a resultados indesejáveis.
 
-Os graus de liberdade de um elemento é a soma dos graus de liberdade de seus nós, dessa forma, um elemento triangular, por exemplo, no espaço bidimensional, possui no máximo 6 graus de liberdade.
 
 \begin{figure}[!htb]
 \centering
@@ -89,21 +90,12 @@ Os graus de liberdade de um elemento é a soma dos graus de liberdade de seus n�
 \end{figure}
 
 \paragraph{Propriedades do material \\}
-Para que o MEF seja capaz de aproximar adequadamente a solução de um problema, é necessário, além da geometria, se especificar as propriedades dos materiais em cada elemento da malha. Na análise estrutural, por exemplo, diferentes materiais reagem diferentemente à uma dada deformação ou  deslocamento, devido à sua rigidez e aos diferentes fenômenos que podem ocorrer, como por exemplo, fenômenos plásticos ou elásticos. Na análise eletromagnética, as propriedades dos materiais podem ser dadas em termos por exemplo, de condutividade, resistividade ou permissividade. Na análise térmica, algumas propriedades relevantes são o calor específico, a condutividade térmica e a expansão térmica.
+Para que o MEF seja capaz de aproximar adequadamente a solução de um problema, é necessário, além da geometria, se especificar as propriedades do material de cada elemento da malha, sobretudo em meios não homogêneos. Na análise estrutural, por exemplo, aspectos como a plasticidade, elasticidade e porosidade podem afetar os resultados. \citep[p. 250]{desai}. Já na análise eletromagnética, algumas propriedades relevantes são a condutividade ($\sigma$), permeabilidade ($\mu$) e a permissividade ($\epsilon$) \citep[p. 3]{volakis}. Na análise térmica algumas propriedades importantes são o calor específico e a condutividade térmica \citep[p. 251]{desai}.
 Desta forma, de acordo com a área de análise, os materiais apresentam características determinantes para a obtenção de resultados adequados.
 
-As propriedades dos materiais podem ainda estar condicionadas à uma determinada direção. Desta forma, os materiais podem ainda ser classificados como isotrópicos, anisotrópicos ou ortotrópicos. Materiais isotrópicos apresentam as mesmas propriedades físicas em todas as direções. Nos materiais anisotrópicos, as propriedades variam conforme a direção considerada. Nos materiais ortotrópicos, as propriedades são diferentes em direções perpendiculares entre si, formando eixos de ortotropia.
+As propriedades dos materiais podem ainda estar condicionadas à uma determinada direção. Desta forma, os materiais podem ainda ser classificados como isotrópicos ou anisotrópicos\citep[p. 20]{sadiku}.  Materiais isotrópicos apresentam as mesmas propriedades físicas em todas as direções. Nos materiais anisotrópicos, as propriedades variam conforme a direção considerada.
 
-A título de exemplo, a tabela \ref{tab:permissividade} contém a comparação entre a permissividade relativa de diferentes materiais.
-
-\begin{table}	
-	\centering
-	\begin{tabular}{|c|c|}	
-
-	\end{tabular}
-	\caption{A permissividade elétrica dos materiais}
-	\label{tab:permissividade}
-\end{table}
+Fenômenos eletromagnéticos dependem adicionalmente da linearidade do meio. Meios lineares são aqueles em que a condutividade, a permeabilidade e a permissividade independem da intensidade do campo elétrico e do campo magnético \citep[p. 20]{sadiku} .
 
 
 \paragraph{Valores de Contorno \\}
