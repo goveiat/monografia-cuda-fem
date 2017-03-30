@@ -1,24 +1,65 @@
 \section{Método dos Elementos Finitos}
 
-Para \citep[p. 19]{jin}, o método dos elementos finitos é uma técnica numérica para se obter soluções aproximadas de problemas de valor de contorno.
+Segundo \citep[p. 19, 27]{jin}, o método dos elementos finitos (MEF) é uma técnica numérica que possibilita a aplicação das funções de interpolação, utilizadas na aproximação de PVC, sobre subdomínios do problema.
 
-Para \citep[p. 13]{reddy}, o MEF trata-se de um método no qual o domínio do problema é visto como uma coleção de subdomínios, sobre os quais, a equação que modela o problema é aproximada por um método variacional.
-
-Segundo \citep[p. 19]{jin},  o método foi desenvolvido inicialmente para a aplicação em análise estrutural, mas em seguida foi estendido para solucionar problemas de outros campos.
-
-Como foi dito anteriormente, problemas contínuos se tornam intratáveis à medida em que a complexidade aumenta. 
-A fim de atacar este problema, foram desenvolvidas por matemáticos, engenheiros e cientistas, estratégias de discretização do domínio e aproximação dos valores da solução. 
-\citep[p. 1]{zien}
-
-Enquanto matemáticos desenvolveram técnicas aplicáveis diretamente sobre as equações diferenciais que governam o problema, tais como o método dos resíduos ponderados e a minimização de funcionais, os engenheiros adotaram abordagens mais intuitivas, por meio da analogia entre elementos discretos e porções finitas de um domínio contínuo.
-\citep[p. 1]{zien}
-
-Uma vez que se têm métodos para a discretização e para a aproximação da solução, é possível definir o método dos elementos finitos como sendo uma sequência de passos para a resolução de problema físico ou matemático a partir de um modelo discreto mais simples (ou relaxado) do problema original. O novo modelo é chamado de formulação fraca, e é geralmente dado na forma integral. O modelo original descrito por equação diferencial é denominado formulação forte. \textbf{***REF}
-
-\subsection{Visão geral}
-A aplicação do MEF compreende basicamente três etapas: pré-processamento, análise e pós-processamento. Cada etapa apresenta uma contribuição para que se obtenha um resultado satisfatório. O pré-processamento é responsável pela discretização e por estabelecar as restrições físicas do domínio. A etapa de análise obtém a aproximação do modelo (forma fraca), e aplica esta aproximação em cada sub-domínio. O resultado preliminar da análise é um sistema de equações lineares que quando resolvido, fornece a solução do problema.  O pós-processamento consiste na exibição adequada dos resultados.A seguir cada etapa é vista em detalhes.
+Já segundo \citep[p. 13]{reddy}, o MEF trata-se de um método no qual o domínio do problema é visto como uma coleção de subdomínios, chamados de elementos finitos, sobre os quais, a equação que modela o problema é aproximada por um método variacional ou de resíduos ponderados.
 
 
+
+Como foi dito anteriormente, a resolução analítica de muitos problemas físicos se torna impraticável à medida em que a sua  complexidade aumenta. 
+A fim de contornar esta dificuldade, estratégias numéricas para a discretização do domínio e aproximação da solução foram desenvolvidas por matemáticos, engenheiros e cientistas \citep[p. 1]{zien}. 
+
+Dentre estas estratégias destacam-se o método das diferenças (MDF) finitas e o método dos elementos finitos (MEF), mostrados na figura \ref{fig:mdfFem}. O MDF consiste na discretização do domínio do problema por meio de uma grade de pontos e na aproximação de cada derivada da equação por um quociente-diferença adequado
+\citep[p. 684]{burden_faires}. Embora este método seja útil em muitos casos, se torna difícil aplicá-lo em problemas com geometria irregular ou com condições de contorno não usuais. \citep[p. 4]{huebner}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.5]{figuras/temp.png}
+\caption{Método das diferenças Finitas e método dos Elementos Finitos}
+\label{fig:mdfFem}
+\end{figure}
+
+Diferentemente do MDF, como coloca \citep[p. 4]{huebner}, o MEF divide o domínio não em pontos, mas em subdomínios sobre os quais as equações são aproximadas por partes, e não pontualmente, como ocorre no MDF. O FEM também é capaz de representar mais fielmente o contorno (ou a borda) do problema. Desta forma, ele se apresenta como uma técnica mais poderosa e versátil para a modelagem de fenômenos com geometria complexa e meios não homogêneos \citep[p. 390]{sadiku}. 
+
+O MEF surgiu originalmente como uma técnica de análise de deslocamentos e elasticidade de estruturas mecânicas, mas em seguida foi estendido para solucionar problemas de outros campos da física e da engenharia. \citep[p. 19]{jin} \citep[p. 3]{desai} \citep[p. 2]{zien}
+
+As primeiras formulações do MEF são conhecidas como \textbf{abordagem direta} ou \textbf{formulação física}, que embora forneça a interpretação intuitiva do método, é util apenas para a resolução de problemas relativamente simples \citep[p. 6]{huebner}. O uso do princípio do trabalho virtual, para a determinação de forças na abordagem direta, levou à generalização do MEF, por meio da estratégia de minimização do funcional de energia. Esta técnica mais genérica  ficou conhecida como \textbf{formulação Variacional} \citep[p. 113]{desai} \citep[p. 20]{zien}. Uma terceira abordagem, conhecida como \textbf{Método dos Resíduos Ponderados} ou \textbf{MEF generalizado} \citep[p. 61]{zien} é tradicionalmente utilizada e é ainda mais genérica que o princípio Variacional, pois resolve diretamente as equações diferenciais do modelo, sem necessitar da existência de um funcional. \citep[p. 261]{desai}
+
+
+\subsection{Sistema de Elementos Discretos}
+\citep[p. 68]{desai} introduz o conceito de Método de Elementos Discretos (MED) como sendo uma etapa intermediária da formulação física MEF. Na representação em elementos discretos, cada elemento é unidimensional, de tal forma que o sistema completo é representado por uma estrutura aramada, conforme mostra a figura \ref{fig:arame}.
+
+De forma similar, \citep[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) como uma forma unificada  de analisar problemas de natureza discreta.
+
+
+Estas abordagens são úteis na compreensão do funcionamento do MEF e do conceito de elemento.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.5]{figuras/temp.png}
+\caption{Estruturas aramadas idealizadas}
+\label{fig:arame}
+\end{figure}
+
+
+
+Chamado de 
+ Sistemas discretos podem ser entendidos como a associação de partes funcionais para a formação de uma estrutura
+
+
+\subsection{Etapas de Processamento}
+A computação de um problema modelado a partir de elementos finitos compreende basicamente três etapas: 
+\begin{enumerate}  
+\item \textbf{Pré-processamento}: Entrada de Dados ou discretização;
+\item \textbf{Processamento}: Análise do problema e  solução do sistema de equações;
+\item \textbf{Pós-processamento}: Apresentação dos Resultados. 
+\end{enumerate}
+
+Cada etapa apresenta uma contribuição para que se obtenha um resultado satisfatório. O pré-processamento é responsável pela discretização e por estabelecar as restrições físicas do domínio. A etapa de análise obtém a aproximação do modelo (forma fraca), e aplica esta aproximação em cada sub-domínio. O resultado preliminar da análise é um sistema de equações lineares que quando resolvido, fornece a solução do problema.  O pós-processamento consiste na exibição adequada dos resultados.
+\citep[p. 665, 666]{zien}
+
+
+A seguir cada etapa é vista em detalhes e exemplificada com um sistema discreto padrão.
 
 \subsubsection{Pré-Processamento}
 
