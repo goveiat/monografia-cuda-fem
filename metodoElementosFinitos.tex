@@ -1,4 +1,4 @@
-\section{Método dos Elementos Finitos}
+\section{Introdução ao Método dos Elementos Finitos}
 
 Segundo \citep[p. 19, 27]{jin}, o método dos elementos finitos (MEF) é uma técnica numérica que possibilita a aplicação das funções de interpolação, utilizadas na aproximação de PVC, sobre subdomínios do problema.
 
@@ -33,7 +33,6 @@ De forma similar, \citep[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) 
 
 Em ambos os casos, os sistemas originais não se tratam de um contínuo, propriamente dito, mas de um sistema composto por partes, no entanto, são muito úteis na compreensão do funcionamento do MEF e do conceito de elemento.
 
-Na subseção a seguir, um modelo de elementos discretos representando uma associação de resistores será apresentado e resolvido.
 
 \begin{figure}[!htb]
 \centering
@@ -58,13 +57,13 @@ Cada etapa apresenta uma contribuição para que se obtenha um resultado satisfa
 \citep[p. 665, 666]{zien}
 
 
-A seguir cada etapa é vista em detalhes e exemplificada com um sistema de elementos discretos.
+Nas seções a seguir cada etapa é vista em detalhes.
 
-\subsubsection{Pré-Processamento}
+\section{Pré-Processamento}
 
 A etapa de pré-processamento compreende a maior parte do tempo de modelagem do método. É neste ponto do processo que se são definidos os apectos geométricos do modelo, as propriedades dos materiais do objeto em análise e a aplicação das condições de contorno. \citep[p. 9, 665]{zien}
 
-\paragraph{Aspectos geométricos \\} 
+\subsection{Aspectos geométricos} 
 A definição dos aspectos geométricos consiste na tranformação do domínio contínuo $\Omega$ em uma malha de elementos finitos. Cada elemento $\Omega_e$ dessa malha será tratado como um subdomínio de $\Omega,$.  
 Nesta etapa são definidas a forma, o número e o tamanho dos elementos, de forma que a representação seja a mais próxima possível do objeto em análise \citep[p. 154]{desai}.
 A figura \ref{fig:elementos} contém a representação de elementos tipicamente utilizados em 1, 2 e 3 dimensões. 
@@ -89,7 +88,7 @@ Um fator que deve ser levado em consideração é o balanceamento entre o refina
 \label{fig:numeracao}
 \end{figure}
 
-\paragraph{Propriedades do material \\}
+\subsection{Propriedades do material}
 Para que o MEF seja capaz de aproximar adequadamente a solução de um problema, é necessário, além da geometria, se especificar as propriedades do material de cada elemento da malha, sobretudo em meios não homogêneos. Na análise estrutural, por exemplo, aspectos como a plasticidade, elasticidade e porosidade podem afetar os resultados. \citep[p. 250]{desai}. Já na análise eletromagnética, algumas propriedades relevantes são a condutividade ($\sigma$), permeabilidade ($\mu$) e a permissividade ($\epsilon$) \citep[p. 3]{volakis}. Na análise térmica algumas propriedades importantes são o calor específico e a condutividade térmica \citep[p. 251]{desai}.
 Desta forma, de acordo com a área de análise, os materiais apresentam características determinantes para a obtenção de resultados adequados.
 
@@ -98,10 +97,10 @@ As propriedades dos materiais podem ainda estar condicionadas à uma determinada
 Fenômenos eletromagnéticos dependem adicionalmente da linearidade do meio. Meios lineares são aqueles em que a condutividade, a permeabilidade e a permissividade independem da intensidade do campo elétrico e do campo magnético \citep[p. 20]{sadiku} .
 
 
-\paragraph{Valores de Contorno \\}
-A atribuição dos valores de contorno é o último passo da etapa de pré- processamento. Estes valores são atribuídos a pontos específicos da malha e são importantes para caracterizar a unicidade de solução.
+\subsection{Valores de Contorno}
+A atribuição dos valores de contorno é o último passo da etapa de pré- processamento. Estes valores são atribuídos a pontos específicos da malha e são importantes para caracterizar a unicidade de solução. \citep[p. 7]{zien}
 
-Considere um capacitor de placas paralelas, no qual uma das armaduras é submetida à uma tensão de 10V e outra à 0V. A ditribuição de potencial e o valor do campo elétrico entre as placas e no ambiente em volta do capacitor, podem ser definidos unicamente a partir das condições de contorno (10V e 10V) impostas em pontos (ou nós) específicos do domínio, como mostra a figura \ref{fig:capacitor}.
+Considere um capacitor de placas paralelas, no qual uma das armaduras é submetida à uma tensão de 10V e outra à 0V. A ditribuição de potencial e o valor do campo elétrico entre as placas e no ambiente em volta do capacitor, podem ser definidos unicamente a partir das condições de contorno (10V e 0V) impostas em pontos (ou nós) específicos do domínio, como mostra a figura \ref{fig:capacitor}.
 
 \begin{figure}[!htb]
 \centering
@@ -110,8 +109,40 @@ Considere um capacitor de placas paralelas, no qual uma das armaduras é submeti
 \label{fig:capacitor}
 \end{figure}
 
-\subsubsection{Processamento ou Análise de Elementos Finitos}
-A etapa de processamento de elementos finitos consiste na elaboração de funções aproximadas para o modelo em questão. Essas aproximações devem ser feitas dentro de cada sub-domínio do sistema. A forma forte do problema é geralmente fornecida como uma equação ou sistemas de equações diferenciais e deve ser transformada no processamento em um conjunto de equações algébricas contínuas por partes.
+
+\section{Processamento ou Análise de Elementos Finitos}
+A etapa de processamento do MEF consiste basicamente em 3 passos \citep[p. 31]{jin}:
+
+\begin{enumerate}  
+\item Seleção das funções de interpolação;
+\item Formulação do sistema de equações;
+\item Solução do sistema de equações. 
+\end{enumerate}
+
+Cada um dos passos acima serão brevemente apresentados nesta seção, mas dada a sua importância e amplitude, eles serão aprofundados nas seções seguintes.
+
+\subsection{Seleção das funções de interpolação}
+O primeiro passo na etapa de processamento é a escolha de uma função de interpolação (função de base ou função de forma) \citep[p. 37]{volakis} que fornece uma aproximação da equação em cada elemento \citep[p. 32]{jin}. 
+A função interpoladora escolhida geralmente é um polinômio, e isso ocorre por dois motivos a priori: \citep[p. 77]{desai}
+
+\begin{itemize}  
+\item Facilidade de manipulação matemática, principalmente derivação e integração;
+\item Aproximação satisfatória quando truncado em uma ordem qualquer.
+\end{itemize}
+
+Na prática são escolhidos polinômios de primeira ou segunda ordem, mas ordens superiores podem ser adotadas para reduzir o erro de aproximação \citep[p. 32]{jin}.
+
+Sendo $N$ a função interpoladora, a solução aproximada $\tilde{\phi}$ da equação $\phi$ para cada um dos $n$ nós de um dado elemento $e$ pode ser dada como:
+
+ \begin{equation}
+ 	\label{eq:interpol}
+		\tilde{\phi^e} = \sum_{j=1}^{n}{N_j^e \phi_j^e}
+ \end{equation}
+
+Uma característica importante das funções $N_j^e$ é que elas são diferentes de zero apenas sobre o subdomínio $e$.
+
+
+\subsection{Formulação do sistema de equações}
 
 \paragraph{Funções sobre o espaço discreto \\}
 
