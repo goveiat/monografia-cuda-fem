@@ -23,7 +23,7 @@ Diferentemente do MDF, como coloca \citep[p. 4]{huebner}, o MEF divide o domíni
 
 O MEF surgiu originalmente como uma técnica de análise de deslocamentos e elasticidade de estruturas mecânicas, mas em seguida foi estendido para solucionar problemas de outros campos da física e da engenharia. \citep[p. 19]{jin} \citep[p. 3]{desai} \citep[p. 2]{zien}
 
-As primeiras formulações do MEF são conhecidas como \textbf{abordagem direta} ou \textbf{formulação física}, que embora forneça a interpretação intuitiva do método, é util apenas para a resolução de problemas relativamente simples \citep[p. 6]{huebner}. O uso do princípio do trabalho virtual, para a determinação de forças na abordagem direta, levou à generalização do MEF, por meio da estratégia de minimização do funcional de energia. Esta técnica mais genérica  ficou conhecida como \textbf{formulação Variacional} \citep[p. 113]{desai} \citep[p. 20]{zien}. Uma terceira abordagem, conhecida como \textbf{Método dos Resíduos Ponderados} ou \textbf{MEF generalizado} \citep[p. 61]{zien} é tradicionalmente utilizada e é ainda mais genérica que o princípio Variacional, pois resolve diretamente as equações diferenciais do modelo, sem necessitar da existência de um funcional. \citep[p. 261]{desai}
+As primeiras formulações do MEF são conhecidas como \textbf{abordagem direta} ou \textbf{formulação física}, que embora forneça a interpretação intuitiva do método, é util apenas para a resolução de problemas relativamente simples \citep[p. 6]{huebner}. O uso do princípio do trabalho virtual, para a determinação de forças na abordagem direta, levou à generalização do MEF, por meio da estratégia de minimização do funcional de energia. Esta técnica mais genérica  ficou conhecida como \textbf{formulação Variacional} \citep[p. 113]{desai} \citep[p. 20]{zien}. Uma terceira abordagem, conhecida como \textbf{Método dos Resíduos Ponderados} ou \textbf{MEF generalizado} \citep[p. 61]{zien} é tradicionalmente utilizada e é ainda mais genérica que o princípio Variacional, pois resolve diretamente as equações diferenciais do modelo, sem necessitar da existência de um funcional. \citep[p. 261]{desai}. Neste trabalho será adotado o método dos resíduos ponderados, mais especificamente, o método de Galerkin.
 
 
 \subsection{Sistema de Elementos Discretos}
@@ -53,8 +53,7 @@ A computação de um problema modelado a partir de elementos finitos compreende 
 \item \textbf{Pós-processamento}: Apresentação dos Resultados. 
 \end{enumerate}
 
-Cada etapa apresenta uma contribuição para que se obtenha um resultado satisfatório. O pré-processamento é responsável pela discretização e por estabelecar as restrições físicas do domínio. A etapa de análise obtém a aproximação do modelo (forma fraca), e aplica esta aproximação em cada sub-domínio. O resultado preliminar da análise é um sistema de equações lineares que quando resolvido, fornece a solução do problema.  O pós-processamento consiste na exibição adequada dos resultados.
-\citep[p. 665, 666]{zien}
+Cada etapa apresenta uma contribuição para que se obtenha um resultado satisfatório. O pré-processamento é responsável pela discretização e por estabelecar as restrições físicas do domínio. A etapa de análise obtém a aproximação do modelo (forma fraca), e aplica esta aproximação em cada sub-domínio. O resultado preliminar da análise é um sistema de equações lineares que quando resolvido, fornece a solução do problema.  O pós-processamento consiste na exibição adequada dos resultados \citep[p. 665, 666]{zien}.
 
 
 Nas seções a seguir cada etapa é vista em detalhes.
@@ -130,34 +129,85 @@ A função interpoladora escolhida geralmente é um polinômio, e isso ocorre po
 \item Aproximação satisfatória quando truncado em uma ordem qualquer.
 \end{itemize}
 
-Na prática são escolhidos polinômios de primeira ou segunda ordem, mas ordens superiores podem ser adotadas para reduzir o erro de aproximação \citep[p. 32]{jin}.
+Na prática são escolhidos polinômios de primeira ou segunda ordem, mas ordens superiores podem ser adotadas para reduzir o erro de aproximação, no entanto, ocorre também o aumento da carga computacional \citep[p. 32]{jin}.
 
-Sendo $N$ a função interpoladora, a solução aproximada $\tilde{\phi}$ da equação $\phi$ para cada um dos $n$ nós de um dado elemento $e$ pode ser dada como:
+Sendo $N$ a função interpoladora, a solução aproximada $\tilde{\phi}$ para cada um dos $n$ nós de um dado elemento $e$ pode ser dada como:
 
  \begin{equation}
  	\label{eq:interpol}
-		\tilde{\phi^e} = \sum_{j=1}^{n}{N_j^e \phi_j^e}
+		\tilde{\phi^e} = \sum_{j=1}^{n}{N_j^e \phi_j^e} = 
+		\{N^e\}^T \{\phi^e\} = \{\phi^e\}^T \{N^e\}
  \end{equation}
 
-Uma característica importante das funções $N_j^e$ é que elas são diferentes de zero apenas sobre o subdomínio $e$.
-
+Neste caso, $N_j^e$ é a função de forma do nó $j$ no elemento $e$ e $\phi_j^e$ é o valor de $\phi$ no nó $j$ do elemento $e$.
+Uma característica importante a ser obervada nas funções $N_j^e$ é que elas são diferentes de zero apenas sobre o subdomínio $e$.
 
 \subsection{Formulação do sistema de equações}
-Para a leitura satisfatória desta subseção é desejável que o leitor esteja familiarizado com alguns conceitos básicos de espaços vetoriais, análise Funcional e princípio Variacional. Estes assuntos são explorados nos apêndices deste trabalho.
+Métodos variacionais ou de resíduos ponderados são tradicionalmente utilizados para se obter um sistema de equações que satisfaça um modelo diferencial \citep[p. 34]{jin}. No modelo de elementos discretos apresentado anteriormente, o sistema de equações existe naturalmente.
 
-Seja a equação \ref{eq:operador}, uma equação diferencial que modela um determinado fenômeno físico, na qual $\mathcal{L}$ é um operador diferencial linear, $f$ é a função de excitação conhecida e $\phi$ é a solução procurada \citep[p. 20]{jin}\citep[p. 24]{volakis}.
+Na abordagem variacional destaca-se o método de Ritz, ou Rayleigh-Ritz, o qual tem por objetivo, minimizar o funcional variacional, ou funcional de energia, do problema aproximado \citep[p. 24]{volakis}. Embora tal abordagem tenha sido historicamente utilizada e possua fundamentação física e matemática, sua adoção, em muitos casos, é mais complicada em relação ao Método dos Resíduos Ponderados, pois demanda a formulação variacional do problema. Desta forma, se um problema é dado por um modelo diferencial, é necessário se obter a partir deste modelo a forma variacional equivalente, para só então se aplicar o método para a obtenção do sistema de equações. No eletromagnetismo, a formulação variacional das equações de Maxwell não é bem estabelecida \citep[p. 211]{jin}.
+
+Para problemas que apresentam explicitamente condições de Dirichlet no contorno e cujo operador $\mathcal{L}$ é linear e auto-adjunto, é possível se obter imediatamente o funcional (ou forma variacional) \citep[p. 81]{zien}, no entanto, como mostra \citep[p. 29]{volakis}, a mesma integral da formulação variacional é obtida pelo método de Galerkin.
+
+\subsubsection{O método dos resíduos ponderados}
+
+Seja a equação \ref{eq:operador}, uma equação diferencial que modela um determinado fenômeno físico, na qual $\mathcal{L}$ é um operador diferencial, $f$ é uma função de excitação conhecida e $\phi$ é a solução procurada \citep[p. 20]{jin}\citep[p. 24]{volakis}.
 
  \begin{equation}
  	\label{eq:operador}
 	\mathcal{L} \phi = f
  \end{equation}
  
-Dado um domínio $\Omega$ e seu contorno $\Gamma$ com condições de Dirichlet explícitas, tem-se conforme o princípio Variacional, 
+ Se substituirmos a solução exata pela sua aproximação apresentada na equação \ref{eq:interpol}, um resíduo $r$ surge, como pode ser visto na equação \ref{eq:residuos}, em decorrencia dos erros de aproximação.
+ 
+  \begin{equation}
+  	\label{eq:residuos}
+ 	r = \mathcal{L} \tilde{\phi} - f \neq 0
+  \end{equation}
 
- \begin{equation}
- 	\label{eq:varPhi}
-	\delta \phi = 0 \ em \ \Gamma
- \end{equation}
+Como não se pode requerer que os resíduos da aproximação seja zero sobre todo o domíno $\Omega$ (o que ocorre na solução exata), faz-se a aproximação ou poderação dos resíduos em cada subdomínio $e$, como mostram as equações \ref{eq:res1} e \ref{eq:res2}. Desta forma, na média, a condição residual é atendida. \citep[p. 28]{volakis}
+
+  \begin{equation}
+  	\label{eq:res1}
+ 	R_i = \int_{\Omega}{w_i r \ d\Omega} = 0
+  \end{equation}
+  
+  \begin{equation}
+  	\label{eq:res2}
+ 	R_i = \int_{\Omega}{w_i [\mathcal{L} \tilde{\phi} - f] \ d\Omega} = 0
+  \end{equation}  
+
+
+A escolha particular de $w_i = \phi_i$ configura o método de Galerkin, o qual, para um operador $\mathcal{L}$ auto adjunto, fornece o mesmo resultado que o método de Ritz  \citep[p. 22]{jin}, conforme a seguinte equação
+
+  \begin{equation}
+  	\label{eq:galerkin}
+ 	R_i = 
+ 	\int_{\Omega}{N_i \mathcal{L} \{N\}^T \{\phi\} \ d\Omega\}} - \int_{\Omega}{N_i f \ d \Omega} = 0
+  \end{equation}  
+  
+  
+  o Resultado da equação \ref{eq:galerkin} é um sistema esparso de equações lineares, representado na equação \ref{eq:sistema}. Se o operador diferencial for auto-adjunto, o sistema é simétrico \citep[p. 36]{volakis}.
+  
+    \begin{equation}
+    	\label{eq:sistema}
+		[N]\{\phi\} = {b}
+    \end{equation}  
+
+É importante colocar que o parâmetro $w_i$ deve ser um conjunto de funções integraveis, linearmente independentes
+\citep[p. 60]{reddy}. Alguns casos especiais do método dos resíduos ponderados são obtidos a partir da escolha de $w_i$:
+
+\begin{equation}
+\label{eq:metPond}
+	\begin{tabular}{ l l }
+	Método de Petrov-Galerkin & $ w_i = \psi_i \neq \phi_i $ \\ 
+	Método de Galerkin & $ w_i = \phi_i $\\  
+	Método dos Mínimos quadrados & $ w_i = \frac{d}{dx} \left(a(x)\frac{d \phi_i}{dx}\right) $ \\ 
+	Método da colocação & $ \delta(x - x_i)  $ 
+	\end{tabular}
+\end{equation}
+
+
 
 \paragraph{Funções sobre o espaço discreto \\}
 
