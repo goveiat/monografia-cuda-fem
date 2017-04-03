@@ -409,6 +409,196 @@ Além das restrições de Dirichlet e Neumann, conforme mostra a tabela \ref{tab
 A solução analítica de um PVC pode ser obtida por meio da integração direta ou a partir da aplicação de técnicas como a separação de variáveis, expansão em séries ou pela transformada de Laplace \cite[p. 31, 191, 239]{boyceDiprima} \cite[p. 59, 263, 355]{powers}.
 No entanto, existem problemas da engenharia e da ciência que não são lineares ou apresentam  condições de contorno complexas, existência de interfaces e grande quatidades de detalhes.  Estas características fazem com que a resolução analítica de tais problemas seja impraticável, sendo necessário recorrer a métodos numéricos para se obter uma solução aproximada \cite[p. 447]{boyceDiprima}  \cite[p.397]{powers}.
 
+
+
+\section{Sistemas de Elementos Discretos}
+\cite[p. 68]{desai} introduz o conceito de Método de Elementos Discretos (MED) como sendo uma etapa intermediária da formulação física MEF. Na representação em elementos discretos, cada elemento é unidimensional, de tal forma que o sistema completo é representado por uma estrutura aramada, conforme mostra a figura \ref{fig:arame}.
+
+De forma similar, \cite[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) como uma forma unificada de analisar problemas de natureza discreta.
+
+Em ambos os casos, os sistemas originais não se tratam de um contínuo, propriamente dito, mas de um sistema composto por partes, no entanto, são muito úteis na compreensão do funcionamento do MEF e do conceito de elemento.
+
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.5]{figuras/temp.png}
+\caption{Estruturas aramadas idealizadas}
+\label{fig:arame}
+\end{figure}
+
+\subsection{Modelo de Elementos Discretos}
+
+Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma ponte metálica, de dutos de um fluido ou até mesmo um circuito elétrico, como apresentado na figura \ref{fig:repMalhaGenerica}.
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.5]{figuras/temp.png}
+\caption{Malha Genérica}
+\label{fig:malhaGenerica}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.5]{figuras/temp.png}
+\caption{Possíveis objetos de representação da malha \ref{fig:malhaGenerica}}
+\label{fig:repMalhaGenerica}
+\end{figure}
+
+
+ Fazendo uma analogia com uma estrutura metálica, conforme apresentado na figura \ref{fig:repMalhaGenerica}-a, as forças que atuam nos nós, podem ser definidas  a a partir dos deslocamento destes nós, da distribuição da carga sobre um dado elemento e da tensão inicial, caso haja.
+ 
+ Supondo que um carregamtno $p$ atue sobre o elemento $1$, as forças que atuam sobre os nós deste elemento podem ser dadas por:
+ 
+ 
+ \begin{equation}
+    \label{eq:forca}
+    \begin{tabular}{c c}
+    $q_1 = 
+        \left \{
+        \begin{tabular}{c}
+            $q_1^1$ \\
+            $q_2^1$ \\
+            $q_3^1$
+        \end{tabular}       
+        \right \}$
+        \
+    $q_1^1 = 
+        \left \{
+        \begin{tabular}{c}
+            $U_1$ \\
+            $V_1$
+        \end{tabular}       
+        \right \}   $
+        \end{tabular}   
+ \end{equation}
+
+
+Similarmente, os deslocamentos podem ser dados para cada nó do elemento. Se as componentes da força na direção de x e y são dadas como U e V, as componentes da força podem ser dadas em função dessas componentes de deslocamento.
+
+ \begin{equation}
+    \label{eq:desloc}
+    \begin{tabular}{c c}
+    $u_1 = 
+        \left \{
+        \begin{tabular}{c}
+            $u_1^1$ \\
+            $u_2^1$ \\
+            $u_3^1$
+        \end{tabular}       
+        \right \}$
+        \
+    $u_1^1 = 
+        \left \{
+        \begin{tabular}{c}
+            $u_1(U_1)$ \\
+            $v_1(V_1)$
+        \end{tabular}       
+        \right \}   $
+        \end{tabular}   
+ \end{equation}
+
+
+Assumindo um material isotrópico, cujo comportamento é linear elástico, a lei de Hooke fornece a equação \ref{eq:hooke}
+
+ \begin{equation}
+    \label{eq:hooke}
+    \textbf{$q^1 = K^1 u^1 + f^1$}
+ \end{equation}
+ 
+ O vetor $q$ representa as forças induzidas pelos deslocamentos $u$ dos nós. A matriz $K$ é a matriz de rigidez ou matriz de coeficientes do problema. $f$ é a força ou tensão inicial do elemento. Caso o estado inicial do elemento seja de equilíbrio, $f$ é igual a zero.
+ 
+ Para que a representação seja adequada é necessário que sejam estabelecidas condições de compatibilidade de deslocamentos e equilíbrio.
+ 
+ A compatibilidade de deslocamento é necessária, uma vez que quando um nó de um elemento é deslocado em uma direção, os elementos vizinhos que compartilham o mesmo nó também são afetados com este deslocamento. Esta condição é satisfeita aos se relacionar todas as forças do sistema.
+ 
+ \subsection{Montagem do Sistema Global}
+ 
+ Para que o conjunto de funções de força ou tensão sobre os subdomínios sejam corretamente agregadas em um sistema global, é necessário se estabelecer as condições de compatibilidade de deslocamento e de equilíbrio.
+ 
+ Como um nó de um elemento é compartilhado com os elementos vizinhos, a compatibilidade dos deslocamentos ocorre por meio da montagem de um sistema global. Este sistema possibilita que todos os deslocamentos estejam relacionados entre si.
+ 
+  A figura \ref{fig:loc2glob} mostra a transformação dos sistemas locais para um sistema com referências globais. Como todos os nós são relacionados entre si, a matriz de rigidez é quadrada e também simétrica para o caso de materiais isotrópicos.
+  
+  \begin{figure}[!htb]
+  \centering
+  \includegraphics[scale=0.5]{figuras/temp.png}
+  \caption{}
+  \label{fig:loc2glob}
+  \end{figure}
+  
+  O sistema em \ref{eq:assembly} mostra a relação entre todos os pontos do domínio para um dado elemento. é importante notar que apenas elementos adjacentes se afetam mutuamente.
+  
+ \begin{equation}
+    \label{eq:assembly}
+    \begin{tabular}{c c c}
+    $q^e = 
+        \left \{
+        \begin{tabular}{c}
+            $q^e_1$ \\
+            $q^e_2$ \\
+            \vdots \\
+            $q^e_m$
+        \end{tabular}       
+        \right \}$
+        \
+    $u^e = 
+        \left \{
+        \begin{tabular}{c}
+            $u_1$ \\
+            $u_2$ \\
+            \vdots \\
+            $u_m$
+        \end{tabular}       
+        \right \}   $
+        \
+        $K^e =
+        \begin{bmatrix}
+            K^e_{11}    & K^e_{12}  & \dots     & K^e_{1m} \\
+            K^e_{11}    & \ddots  & \   & \vdots \\
+            \vdots  & \vdots     & \    & \vdots \\
+            K^e_{m1}    & \dots   & \dots   & K^e_{mm} 
+        \end{bmatrix}    $      
+    \end{tabular} 
+ \end{equation}
+ 
+ Com os deslocamento relacionados em todos os pontos elementos do sistema,
+ a condição de equilíbrio é satisfeita quando o somatório das forças causadoras de tais deslocamentos nula, ou seja, a resultante em um dado ponto $a$ vale zero.
+ 
+  \begin{equation}
+    \label{eq:somaForcas}
+    \sum_{e=1}^{m}{q_a^e = q_a^1 + q_a^2 + \dots = 0}
+  \end{equation}
+  
+  Considerando que o corpo está inicialmente em equilíbrio, ou seja, $f = 0$, o sistema como um todo pode ser representado como 
+  
+    \begin{equation}
+        \label{eq:equilibrio}
+        q =
+        \sum_{b=1}^{n}\sum_{e=1}^{m}{K_{ab}^e u_b = 0}
+    \end{equation}
+    
+    
+\subsection{Atribuição das condições de Contorno}
+A atribuição dos valores de contorno da variável $u$ consiste na especificação dos deslocamentos ou deformações prefixadas no sistema. No exemplo \ref{fig:repMalhaGenerica}-a, como análise estrutural, as condições de contorno podem ser os deslocamentos nulos impostos nós fixados (soldados) ou condições iniciais de tensão ou torção. a equação \ref{eq:condIni} exemplifica a atribuição dessas condições.
+
+\begin{equation}
+    \label{eq:condIni}
+    u_1 = u_6 = 
+        \left \{
+        \begin{tabular}{c}
+            $0$ \\
+            $0$ \\
+        \end{tabular}       
+        \right \}   
+\end{equation}
+
+A inserção de valores de contorno no sistema promove a redução do número de equações de equilíbrio, por meio da eliminação das linhas cujo valor de $u$ já foi especificado.
+
+\subsection{Exemplo Numérico: Associação de resistores}
+
+A fim de exemplificar a etapa de processamento,  considere a malha de resistores introduzidas  em \ref{fig:repMalhaGenerica}-b. Neste caso, as condições de contorno são as a tensões fornecidas por uma bateria.
+
+
+
 \section{Introdução ao Método dos Elementos Finitos}
 
 Segundo \citeonline[p. 19, 27]{jin}, o método dos elementos finitos (MEF) é uma técnica numérica que possibilita a aplicação das funções de interpolação, utilizadas na aproximação de PVC, sobre subdomínios do problema.
@@ -432,25 +622,14 @@ Dentre estas estratégias destacam-se o método das diferenças (MDF) finitas e 
 
 Diferentemente do MDF, como coloca \cite[p. 4]{huebner}, o MEF divide o domínio não em pontos, mas em subdomínios sobre os quais as equações são aproximadas por partes, e não pontualmente, como ocorre no MDF. O FEM também é capaz de representar mais fielmente o contorno (ou a borda) do problema. Desta forma, ele se apresenta como uma técnica mais poderosa e versátil para a modelagem de fenômenos com geometria complexa e meios não homogêneos \cite[p. 390]{sadiku}. 
 
+
+\subsection{Origens do Método}
+
 O MEF surgiu originalmente como uma técnica de análise de deslocamentos e elasticidade de estruturas mecânicas, mas em seguida foi estendido para solucionar problemas de outros campos da física e da engenharia \cite[p. 19]{jin} \cite[p. 3]{desai} \cite[p. 2]{zien}
 
 As primeiras formulações do MEF são conhecidas como \textbf{abordagem direta} ou \textbf{formulação física}, que embora forneça a interpretação intuitiva do método, é util apenas para a resolução de problemas relativamente simples \cite[p. 6]{huebner}. O uso do princípio do trabalho virtual, para a determinação de forças na abordagem direta, levou à generalização do MEF, por meio da estratégia de minimização do funcional de energia. Esta técnica mais genérica  ficou conhecida como \textbf{formulação Variacional} \cite[p. 113]{desai} \cite[p. 20]{zien}. Uma terceira abordagem, conhecida como \textbf{Método dos Resíduos Ponderados} ou \textbf{MEF generalizado} \cite[p. 61]{zien} é tradicionalmente utilizada e é ainda mais genérica que o princípio Variacional, pois resolve diretamente as equações diferenciais do modelo, sem necessitar da existência de um funcional \cite[p. 261]{desai}. Neste trabalho será adotado o método dos resíduos ponderados, mais especificamente, o método de Galerkin.
 
 
-\subsection{Sistema de Elementos Discretos}
-\cite[p. 68]{desai} introduz o conceito de Método de Elementos Discretos (MED) como sendo uma etapa intermediária da formulação física MEF. Na representação em elementos discretos, cada elemento é unidimensional, de tal forma que o sistema completo é representado por uma estrutura aramada, conforme mostra a figura \ref{fig:arame}.
-
-De forma similar, \cite[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) como uma forma unificada de analisar problemas de natureza discreta.
-
-Em ambos os casos, os sistemas originais não se tratam de um contínuo, propriamente dito, mas de um sistema composto por partes, no entanto, são muito úteis na compreensão do funcionamento do MEF e do conceito de elemento.
-
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.5]{figuras/temp.png}
-\caption{Estruturas aramadas idealizadas}
-\label{fig:arame}
-\end{figure}
 
 
 
@@ -620,178 +799,7 @@ A escolha particular de $w_i = \phi_i$ configura o método de Galerkin, o qual, 
 
 
 
-\paragraph{Funções sobre o espaço discreto \\}
 
-Nesta seção será apresentada a visão geral do método. Para tal, os conceitos de formulação forte e fraca não serão necessários, visto que os problemas aqui descritos são modelados por sistemas lineares e não por equações diferenciais. Assim sendo, o MEF pode ser aplicado diretamente ao problema, sem a necessidade de se obter a forma integral (forma fraca) a partir de técnicas à relaxação da forma forte, como por exemplo o princípio dos trabalhos virtuais (abordagem direta), o método de Ritz (abordagem Variacional) e de Galerkin (abordagem por Resíduos ponderados).
-
-Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma ponte metálica, de dutos de um fluido ou até mesmo um circuito elétrico, como apresentado na figura \ref{fig:repMalhaGenerica}.
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.5]{figuras/temp.png}
-\caption{Malha Genérica}
-\label{fig:malhaGenerica}
-\end{figure}
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.5]{figuras/temp.png}
-\caption{Possíveis objetos de representação da malha \ref{fig:malhaGenerica}}
-\label{fig:repMalhaGenerica}
-\end{figure}
-
-
- Fazendo uma analogia com uma estrutura metálica, conforme apresentado na figura \ref{fig:repMalhaGenerica}-a, as forças que atuam nos nós, podem ser definidas  a a partir dos deslocamento destes nós, da distribuição da carga sobre um dado elemento e da tensão inicial, caso haja.
- 
- Supondo que um carregamtno $p$ atue sobre o elemento $1$, as forças que atuam sobre os nós deste elemento podem ser dadas por:
- 
- 
- \begin{equation}
-    \label{eq:forca}
-    \begin{tabular}{c c}
-    $q_1 = 
-        \left \{
-        \begin{tabular}{c}
-            $q_1^1$ \\
-            $q_2^1$ \\
-            $q_3^1$
-        \end{tabular}       
-        \right \}$
-        \
-    $q_1^1 = 
-        \left \{
-        \begin{tabular}{c}
-            $U_1$ \\
-            $V_1$
-        \end{tabular}       
-        \right \}   $
-        \end{tabular}   
- \end{equation}
-
-
-Similarmente, os deslocamentos podem ser dados para cada nó do elemento. Se as componentes da força na direção de x e y são dadas como U e V, as componentes da força podem ser dadas em função dessas componentes de deslocamento.
-
- \begin{equation}
-    \label{eq:desloc}
-    \begin{tabular}{c c}
-    $u_1 = 
-        \left \{
-        \begin{tabular}{c}
-            $u_1^1$ \\
-            $u_2^1$ \\
-            $u_3^1$
-        \end{tabular}       
-        \right \}$
-        \
-    $u_1^1 = 
-        \left \{
-        \begin{tabular}{c}
-            $u_1(U_1)$ \\
-            $v_1(V_1)$
-        \end{tabular}       
-        \right \}   $
-        \end{tabular}   
- \end{equation}
-
-
-Assumindo um material isotrópico, cujo comportamento é linear elástico, a lei de Hooke fornece a equação \ref{eq:hooke}
-
- \begin{equation}
-    \label{eq:hooke}
-    \textbf{$q^1 = K^1 u^1 + f^1$}
- \end{equation}
- 
- O vetor $q$ representa as forças induzidas pelos deslocamentos $u$ dos nós. A matriz $K$ é a matriz de rigidez ou matriz de coeficientes do problema. $f$ é a força ou tensão inicial do elemento. Caso o estado inicial do elemento seja de equilíbrio, $f$ é igual a zero.
- 
- Para que a representação seja adequada é necessário que sejam estabelecidas condições de compatibilidade de deslocamentos e equilíbrio.
- 
- A compatibilidade de deslocamento é necessária, uma vez que quando um nó de um elemento é deslocado em uma direção, os elementos vizinhos que compartilham o mesmo nó também são afetados com este deslocamento. Esta condição é satisfeita aos se relacionar todas as forças do sistema.
- 
- \paragraph{Montagem do Sistema Global}
- 
- Para que o conjunto de funções de força ou tensão sobre os subdomínios sejam corretamente agregadas em um sistema global, é necessário se estabelecer as condições de compatibilidade de deslocamento e de equilíbrio.
- 
- Como um nó de um elemento é compartilhado com os elementos vizinhos, a compatibilidade dos deslocamentos ocorre por meio da montagem de um sistema global. Este sistema possibilita que todos os deslocamentos estejam relacionados entre si.
- 
-  A figura \ref{fig:loc2glob} mostra a transformação dos sistemas locais para um sistema com referências globais. Como todos os nós são relacionados entre si, a matriz de rigidez é quadrada e também simétrica para o caso de materiais isotrópicos.
-  
-  \begin{figure}[!htb]
-  \centering
-  \includegraphics[scale=0.5]{figuras/temp.png}
-  \caption{}
-  \label{fig:loc2glob}
-  \end{figure}
-  
-  O sistema em \ref{eq:assembly} mostra a relação entre todos os pontos do domínio para um dado elemento. é importante notar que apenas elementos adjacentes se afetam mutuamente.
-  
- \begin{equation}
-    \label{eq:assembly}
-    \begin{tabular}{c c c}
-    $q^e = 
-        \left \{
-        \begin{tabular}{c}
-            $q^e_1$ \\
-            $q^e_2$ \\
-            \vdots \\
-            $q^e_m$
-        \end{tabular}       
-        \right \}$
-        \
-    $u^e = 
-        \left \{
-        \begin{tabular}{c}
-            $u_1$ \\
-            $u_2$ \\
-            \vdots \\
-            $u_m$
-        \end{tabular}       
-        \right \}   $
-        \
-        $K^e =
-        \begin{bmatrix}
-            K^e_{11}    & K^e_{12}  & \dots     & K^e_{1m} \\
-            K^e_{11}    & \ddots  & \   & \vdots \\
-            \vdots  & \vdots     & \    & \vdots \\
-            K^e_{m1}    & \dots   & \dots   & K^e_{mm} 
-        \end{bmatrix}    $      
-    \end{tabular} 
- \end{equation}
- 
- Com os deslocamento relacionados em todos os pontos elementos do sistema,
- a condição de equilíbrio é satisfeita quando o somatório das forças causadoras de tais deslocamentos nula, ou seja, a resultante em um dado ponto $a$ vale zero.
- 
-  \begin{equation}
-    \label{eq:somaForcas}
-    \sum_{e=1}^{m}{q_a^e = q_a^1 + q_a^2 + \dots = 0}
-  \end{equation}
-  
-  Considerando que o corpo está inicialmente em equilíbrio, ou seja, $f = 0$, o sistema como um todo pode ser representado como 
-  
-    \begin{equation}
-        \label{eq:equilibrio}
-        q =
-        \sum_{b=1}^{n}\sum_{e=1}^{m}{K_{ab}^e u_b = 0}
-    \end{equation}
-    
-    
-\paragraph{Atribuição das condições de Contorno \\}
-A atribuição dos valores de contorno da variável $u$ consiste na especificação dos deslocamentos ou deformações prefixadas no sistema. No exemplo \ref{fig:repMalhaGenerica}-a, como análise estrutural, as condições de contorno podem ser os deslocamentos nulos impostos nós fixados (soldados) ou condições iniciais de tensão ou torção. a equação \ref{eq:condIni} exemplifica a atribuição dessas condições.
-
-\begin{equation}
-    \label{eq:condIni}
-    u_1 = u_6 = 
-        \left \{
-        \begin{tabular}{c}
-            $0$ \\
-            $0$ \\
-        \end{tabular}       
-        \right \}   
-\end{equation}
-
-A inserção de valores de contorno no sistema promove a redução do número de equações de equilíbrio, por meio da eliminação das linhas cujo valor de $u$ já foi especificado.
-
-\paragraph{Exemplo \\}
-
-A fim de exemplificar a etapa de processamento,  considere a malha de resistores introduzidas  em \ref{fig:repMalhaGenerica}-b. Neste caso, as condições de contorno são as a tensões fornecidas por uma bateria.
 
 \subsubsection{Pós-Processamento}
 A etapa de pós processamento consiste na apresentação dos resultados obtidos no processamento e na determinação de variáveis secundárias a partir destes resultados.
