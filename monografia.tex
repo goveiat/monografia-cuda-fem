@@ -346,10 +346,16 @@ estado
 % ---
 \chapter{Fundamentação teórica}
 % ---
-Nesta seção é apresentado o referencial teórico para a compreensão dos métodos e conceitos utilizados ao longo deste trabalho. Na primeira seção deste capítulo é apresentada a definição de Problemas de Valor de Contorno. Em seguida, na seção\ref{sec:MEF} é feita uma introdução ao Método dos Elementos Finitos (MEF). Na seção \ref{sec:eletromag} são apresentadas as equações de Maxwell para o Eletromagnetismo e na seção \ref{sec:gradiente} é abordado o Método do Gradiente Conjugado.
+Neste capítulo é apresentado o referencial teórico para a compreensão dos métodos e conceitos utilizados ao longo deste trabalho. 
+Na \hyperref[sec:PVC]{primeira seção} deste capítulo é apresentada a definição de Problemas de Valor de Contorno. 
+Na \hyperref[sec:SED]{seção seguinte}, são abordados os Sistemas de Elementos Discretos a fim de fornecer a compreensão intuitiva e genérica do Método dos Elementos Finitos.
+Em seguida, na seção \ref{sec:MEF} é feita a introdução ao Método dos Elementos Finitos (MEF). 
+As seções \ref{sec:preProc}, \ref{sec:proc} e \ref{sec:posProc} abordam respectivamente, as etapas de pré-processamento, análise e pós-processamento do MEF.
+Nas seção \ref{sec:eletromag} são apresentadas as equações de Maxwell para o Eletromagnetismo e na seção \ref{sec:tecItera} são mostradas algumas técnicas iterativas para a resolução de sistemas lineares, tais como o Método do Gradiente Conjugado e o uso de Precondicionadores. Tais técnicas são as estratégias utilizadas para a realização da abordagem Elemento a Elemento (EbE) do MEF.
+Por fim, a \hyperref[sec:GPGPU]{última seção} deste capítulo apresenta os principais fundamentos da programação de Uso Geral em Unidades de Processamento Gráfico (GPGPU).
 
 \section{Problema de Valor de Contorno}
-
+\label{sec:PVC}
 
 Um problema modelado por equações diferenciais parciais bem-posto, segundo as definições de Hadamard (1923), é aquele que   apresenta a existência, unicidade e estabilidade de solução. Por estabilidade entende-se que uma pequena alteração no modelo leva à uma pequena alteração na solução \citeonline{moh}. Para que estas condições sejam satisfeitas, é necessário que o modelo matemático descreva adequadamente o fenômeno analisado e que as condições de contorno, ou condições iniciais, sejam bem estabelecidas. Assim sendo, um problema de valor 
 
@@ -412,6 +418,8 @@ No entanto, existem problemas da engenharia e da ciência que não são lineares
 
 
 \section{Sistemas de Elementos Discretos}
+\label{sec:SED}
+
 \cite[p. 68]{desai} introduz o conceito de Método de Elementos Discretos (MED) como sendo uma etapa intermediária da formulação física MEF. Na representação em elementos discretos, cada elemento é unidimensional, de tal forma que o sistema completo é representado por uma estrutura aramada, conforme mostra a figura \ref{fig:arame}.
 
 De forma similar, \cite[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) como uma forma unificada de analisar problemas de natureza discreta.
@@ -600,6 +608,7 @@ A fim de exemplificar a etapa de processamento,  considere a malha de resistores
 
 
 \section{Introdução ao Método dos Elementos Finitos}
+\label{sec:MEF}
 
 Segundo \citeonline[p. 19, 27]{jin}, o método dos elementos finitos (MEF) é uma técnica numérica que possibilita a aplicação das funções de interpolação, utilizadas na aproximação de PVC, sobre subdomínios do problema.
 
@@ -649,6 +658,7 @@ Cada etapa apresenta uma contribuição para que se obtenha um resultado satisfa
 Nas seções a seguir cada etapa é vista em detalhes.
 
 \section{Pré-Processamento}
+\label{sec:preProc}
 
 A etapa de pré-processamento compreende a maior parte do tempo de modelagem do método. É neste ponto do processo que se são definidos os apectos geométricos do modelo, as propriedades dos materiais do objeto em análise e a aplicação das condições de contorno \cite[p. 9, 665]{zien}
 
@@ -700,6 +710,8 @@ Considere um capacitor de placas paralelas, no qual uma das armaduras é submeti
 
 
 \section{Processamento ou Análise de Elementos Finitos}
+\label{sec:proc}
+
 A etapa de processamento do MEF consiste basicamente em 3 passos \cite[p. 31]{jin}:
 
 \begin{enumerate}  
@@ -826,8 +838,20 @@ A partir desta abordagem, a forma fraca do problema diferencial é obtida com o 
 \cite[p. 20]{zien}
 
  
+\section{Pós-processamento}
+\label{sec:posProc}
+
+\section{Fundamentos do Eletromagnetismo}
+\label{sec:eletromag}
 
 
+\section{Técnicas iterativas de álgebra matricial}
+\label{sec:tecItera}
+
+
+
+\section{Programação de Uso Geral em GPU}
+\label{sec:GPGPU}
 
 
 
