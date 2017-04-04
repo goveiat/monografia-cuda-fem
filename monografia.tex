@@ -315,9 +315,9 @@ Resumo...
 % Introdução (exemplo de capítulo sem numeração, mas presente no Sumário)
 % ----------------------------------------------------------
 \chapter{Introdução}
-%\addcontentsline{toc}{chapter}{Introdução}
-% ----------------------------------------------------------
-citeonline \citeonline{DAYVISSON2015}  cite \cite{IEEECEC2016}.
+
+ Introdução
+
 
 
 \section{Justificativa}
@@ -420,41 +420,89 @@ No entanto, existem problemas da engenharia e da ciência que não são lineares
 \section{Sistemas de Elementos Discretos}
 \label{sec:SED}
 
-\cite[p. 68]{desai} introduz o conceito de Método de Elementos Discretos (MED) como sendo uma etapa intermediária da formulação física MEF. Na representação em elementos discretos, cada elemento é unidimensional, de tal forma que o sistema completo é representado por uma estrutura aramada, conforme mostra a figura \ref{fig:arame}.
+\cite[p. 68]{desai} introduz o conceito de Método de Elementos Discretos (MED) como sendo uma etapa intermediária da formulação física MEF. Na representação em elementos discretos, cada elemento é unidimensional, de tal forma que o sistema completo é representado por uma estrutura aramada, conforme mostra a figura \ref{fig:malhaGenerica}.
 
 De forma similar, \cite[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) como uma forma unificada de analisar problemas de natureza discreta.
 
 Em ambos os casos, os sistemas originais não se tratam de um contínuo, propriamente dito, mas de um sistema composto por partes, no entanto, são muito úteis na compreensão do funcionamento do MEF e do conceito de elemento.
 
 
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.5]{figuras/temp.png}
-\caption{Estruturas aramadas idealizadas}
-\label{fig:arame}
-\end{figure}
-
 \subsection{Modelo de Elementos Discretos}
 
-Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma ponte metálica, de dutos de um fluido ou até mesmo um circuito elétrico, como apresentado na figura \ref{fig:repMalhaGenerica}.
+Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma estrutura mecânica (pórtico), de um sistema de dutos ou de circuito elétrico, como apresentado na figura \ref{fig:repMalhaGenerica}.
 \begin{figure}[!htb]
 \centering
-\includegraphics[scale=0.5]{figuras/temp.png}
-\caption{Malha Genérica}
+	\begin{tabular}{c c}
+		\includegraphics[scale=0.5]{figuras/malhaGenericaG.pdf}	
+		&
+		\includegraphics[scale=0.5]{figuras/malhaGenericaL.pdf}
+		\\
+		(a) & (b)
+	\end{tabular} 
+
+\caption{Malha Genérica (a) Numeração global de nós (b) Numeração local de nós}
 \label{fig:malhaGenerica}
 \end{figure}
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[scale=0.5]{figuras/temp.png}
-\caption{Possíveis objetos de representação da malha \ref{fig:malhaGenerica}}
+\includegraphics[scale=0.5]{figuras/malhaResistores.pdf}
+\caption{Circuito puramente resistivo, um possível objeto de representação da malha da figura \ref{fig:malhaGenerica}}
 \label{fig:repMalhaGenerica}
 \end{figure}
 
+Na figura \ref{fig:malhaGenerica}, os elementos são identificados por números (sem parentesis) de $1$ a $6$. A identificação de cada nó, ou junção, é feita entre parêntesis. Na figura \ref{fig:malhaGenerica}$(a)$, em negrito, cada nó é relacionado à um identificador global, enquanto na figura \ref{fig:malhaGenerica}$(b)$, os nós possuem identificadores locais, relativos não ao conjunto total de nós, mas apenas aos nós de um dado elemento.
 
- Fazendo uma analogia com uma estrutura metálica, conforme apresentado na figura \ref{fig:repMalhaGenerica}-a, as forças que atuam nos nós, podem ser definidas  a a partir dos deslocamento destes nós, da distribuição da carga sobre um dado elemento e da tensão inicial, caso haja.
+Fazendo a analogia com um pórtico, as forças que atuam sobre cada nó, podem ser definidas a partir dos deslocamento destes nós \cite[p. 3]{zien}. Esta relação pode ser obtida a partir da lei de Hooke simples, conforme a equação \ref{eq:hooke1}, na qual as forças $Q_1$ e $Q_2$ sobre os nós de um elemento são dadas dadas em função dos deslocamentos $u_1$ e $u_2$. A constante $A$ é a área do elemento, $E$ é o módulo de Young (Módulo de Elasticidade) e $l$ é o cumprimento do elemento \cite[p. 13]{desai}.
+
+ \begin{equation}
+    \label{eq:hooke1}
+	\left \{
+     \begin{tabular}{c}
+         $Q_1$ \\
+         $Q_2$
+     \end{tabular}       
+     \right \} =
+     	\frac{AE}{l}
+        \begin{bmatrix}
+            1 & -1 \\
+            -1 & 1
+        \end{bmatrix}      
+	\left \{
+     \begin{tabular}{c}
+         $u_1$ \\
+         $u_2$
+     \end{tabular}       
+     \right \}            
+ \end{equation}
+
+
+No circuito resistivo da figura \ref{fig:repMalhaGenerica}, a relação para um elemento é dada pela Lei de Ohm, na qual as correntes em cada nó, podem ser definidas à partir das tensões nestes. Na equação \ref{eq:ohm1}, $I_a$ e $V_a$ são respectivamente a corrente e a tensão no nó $a$ de um elemento, enquanto $R$ é a resistência do mesmo \cite[p. 7]{zien}.
+
+ \begin{equation}
+    \label{eq:ohm1}
+	\left \{
+     \begin{tabular}{c}
+         $I_1$ \\
+         $I_2$
+     \end{tabular}       
+     \right \} =
+     	\frac{1}{R}
+        \begin{bmatrix}
+            1 & -1 \\
+            -1 & 1
+        \end{bmatrix}      
+	\left \{
+     \begin{tabular}{c}
+         $V_1$ \\
+         $V_2$
+     \end{tabular}       
+     \right \}            
+ \end{equation}
  
- Supondo que um carregamtno $p$ atue sobre o elemento $1$, as forças que atuam sobre os nós deste elemento podem ser dadas por:
+Conhecendo as equações que modelam um único elemento, a questão a ser analisada é: Como obter resultados para todo o sistema à partir da compilação dos resultados de cada elemento? Esta questão é respondida nas duas subseções seguintes.
+ 
+Supondo que um carregamtno $p$ atue sobre o elemento $1$, as forças que atuam sobre os nós deste elemento podem ser dadas por:
  
  
  \begin{equation}
@@ -675,7 +723,7 @@ A figura \ref{fig:elementos} contém a representação de elementos tipicamente 
 \end{figure}
 
 Conforme pode ser visto na figura \ref{fig:numeracao}, cada elemento pode ser identificado na malha a partir de um número que lhe é atribuído. De forma similar, os vértices (ou nós) também são numerados. Cada nó possui dois valores vinculados a ele. 
-O primeiro número de cada par ordenado representa a numeração global nó, ou seja, a identificação do nó na malha. O segundo número do par ordenado é a numeração do nó dentro de um dado elemento (Identificação local). A numeração local é geralmente feita no sentido anti-horário, a fim de se obter um valor positivo no cálculo da área ou volume por meio do  determinante \cite[p. 394]{sadiku}. 
+O primeiro número de cada par ordenado representa a numeração global nó, ou seja, a identificação do nó na malha. O segundo número do par ordenado é a numeração do nó dentro de um dado elemento (Identificação local). A numeração local é geralmente feita no sentido antihorário, a fim de se obter um valor positivo no cálculo da área ou volume por meio do  determinante \cite[p. 394]{sadiku} \cite[p. 95]{jin}. 
 
 Um fator que deve ser levado em consideração é o balanceamento entre o refinamento da malha e o esforço computacional necessário \cite[p. 154]{desai}. Como o valor da solução é aproximado para cada elemento, o excesso de elementos pode causar a propagação do erro de aproximação, levando a resultados indesejáveis.
 
