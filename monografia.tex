@@ -351,7 +351,7 @@ Na \hyperref[sec:PVC]{primeira seção} deste capítulo é apresentada a defini�
 Na \hyperref[sec:SED]{seção seguinte}, são abordados os Sistemas de Elementos Discretos a fim de fornecer a compreensão intuitiva e genérica do Método dos Elementos Finitos.
 Em seguida, na seção \ref{sec:MEF} é feita a introdução ao Método dos Elementos Finitos (MEF). 
 As seções \ref{sec:preProc}, \ref{sec:proc} e \ref{sec:posProc} abordam respectivamente, as etapas de pré-processamento, análise e pós-processamento do MEF.
-Nas seção \ref{sec:eletromag} são apresentadas as equações de Maxwell para o Eletromagnetismo e na seção \ref{sec:tecItera} são mostradas algumas técnicas iterativas para a resolução de sistemas lineares, tais como o Método do Gradiente Conjugado e o uso de Precondicionadores. Tais técnicas são as estratégias utilizadas para a realização da abordagem Elemento a Elemento (EbE) do MEF.
+Nas seção \ref{sec:eletromag} são apresentadas as equações de Maxwell para o Eletromagnetismo e na seção \ref{sec:tecItera} são mostradas algumas técnicas iterativas para a resolução de sistemas lineares, tais como o Método do Gradiente Conjugado e o uso de Precondicionadores. Estas técnicas são as estratégias utilizadas para a realização da abordagem Elemento a Elemento (EbE) do MEF.
 Por fim, a \hyperref[sec:GPGPU]{última seção} deste capítulo apresenta os principais fundamentos da programação de Uso Geral em Unidades de Processamento Gráfico (GPGPU).
 
 \section{Problema de Valor de Contorno}
@@ -424,12 +424,12 @@ No entanto, existem problemas da engenharia e da ciência que não são lineares
 
 De forma similar, \cite[p. 2]{zien} apresenta o Sistema Discreto Padrão (SDP) como uma forma unificada de analisar problemas de natureza discreta.
 
-Em ambos os casos, os sistemas originais não se tratam de um contínuo, propriamente dito, mas de um sistema composto por partes, no entanto, são muito úteis na compreensão do funcionamento do MEF e do conceito de elemento.
+Em ambos os casos, os sistemas originais não se tratam de um contínuo, propriamente dito, mas de um sistema composto por partes. Cada parte por si só é um componente físico funcional, seja ela uma viga, um tubo ou um resistor, por exemplo. Entender o sistema de elementos discretos é importante para compreensão do funcionamento do MEF \cite[p. 6]{zien}, cujos elementos (quadrados, triângulos ou tetraedros) não são funcionais ou não possuem um significado físico fora do sistema.
 
 
 \subsection{Modelo de Elementos Discretos}
 
-Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma estrutura mecânica (pórtico), de um sistema de dutos ou de circuito elétrico, como apresentado na figura \ref{fig:repMalhaGenerica}.
+Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. Esta malha pode representar por exemplo, a abstração de uma estrutura mecânica (pórtico), de um sistema hidráulico ou de circuito elétrico, como o apresentado na figura \ref{fig:repMalhaGenerica}.
 \begin{figure}[!htb]
 \centering
 	\begin{tabular}{c c}
@@ -451,9 +451,9 @@ Considere a malha bidimensional  apresentada na figura \ref{fig:malhaGenerica}. 
 \label{fig:repMalhaGenerica}
 \end{figure}
 
-Na figura \ref{fig:malhaGenerica}, os elementos são identificados por números (sem parentesis) de $1$ a $6$. A identificação de cada nó, ou junção, é feita entre parêntesis. Na figura \ref{fig:malhaGenerica}$(a)$, em negrito, cada nó é relacionado à um identificador global, enquanto na figura \ref{fig:malhaGenerica}$(b)$, os nós possuem identificadores locais, relativos não ao conjunto total de nós, mas apenas aos nós de um dado elemento.
+Na figura \ref{fig:malhaGenerica}, os elementos são identificados por números (sem parentesis) de $1$ a $6$. A identificação de cada nó, ou junção, é feita entre parêntesis. Na figura \ref{fig:malhaGenerica}$(a)$, em negrito, cada nó é relacionado à um identificador global, enquanto na figura \ref{fig:malhaGenerica}$(b)$, os nós possuem identificadores locais, relativos não ao conjunto total de nós, mas apenas aos nós de um dado elemento. Estes identificadores são necessários para a análise de um único elemento e em seguida para a montagem do sistema como um todo.
 
-Fazendo a analogia com um pórtico, as forças que atuam sobre cada nó, podem ser definidas a partir dos deslocamento destes nós \cite[p. 3]{zien}. Esta relação pode ser obtida a partir da lei de Hooke simples, conforme a equação \ref{eq:hooke1}, na qual as forças $Q_1$ e $Q_2$ sobre os nós de um elemento são dadas dadas em função dos deslocamentos $u_1$ e $u_2$. A constante $A$ é a área do elemento, $E$ é o módulo de Young (Módulo de Elasticidade) e $l$ é o cumprimento do elemento \cite[p. 13]{desai}.
+Fazendo a analogia com um pórtico, as forças que atuam sobre cada nó, podem ser definidas a partir dos deslocamento destes nós \cite[p. 3]{zien}. Esta relação é dada pela lei de Hooke simples, mostrada na equação \ref{eq:hooke1}, na qual as forças $Q_1$ e $Q_2$ sobre os nós de um elemento são dadas calculadas em função dos deslocamentos $u_1$ e $u_2$. A constante $A$ é a área do elemento, $E$ é o módulo de Young (Módulo de Elasticidade) e $l$ é o cumprimento do elemento \cite[p. 13]{desai}.
 
  \begin{equation}
     \label{eq:hooke1}
@@ -477,7 +477,7 @@ Fazendo a analogia com um pórtico, as forças que atuam sobre cada nó, podem s
  \end{equation}
 
 
-No circuito resistivo da figura \ref{fig:repMalhaGenerica}, a relação para um elemento é dada pela Lei de Ohm, na qual as correntes em cada nó, podem ser definidas à partir das tensões nestes. Na equação \ref{eq:ohm1}, $I_a$ e $V_a$ são respectivamente a corrente e a tensão no nó $a$ de um elemento, enquanto $R$ é a resistência do mesmo \cite[p. 7]{zien}.
+No circuito resistivo da figura \ref{fig:repMalhaGenerica}, a relação para um elemento é dada pela Lei de Ohm, na qual as correntes em cada nó, podem ser definidas à partir das tensões nos terminais do elemento. Na equação \ref{eq:ohm1}, $I_a$ e $V_a$ são respectivamente a corrente e a tensão no nó $a$ de um elemento, enquanto $R$ é a resistência do mesmo \cite[p. 7]{zien}.
 
  \begin{equation}
     \label{eq:ohm1}
@@ -500,71 +500,59 @@ No circuito resistivo da figura \ref{fig:repMalhaGenerica}, a relação para um 
      \right \}            
  \end{equation}
  
-Conhecendo as equações que modelam um único elemento, a questão a ser analisada é: Como obter resultados para todo o sistema à partir da compilação dos resultados de cada elemento? Esta questão é respondida nas duas subseções seguintes.
- 
-Supondo que um carregamtno $p$ atue sobre o elemento $1$, as forças que atuam sobre os nós deste elemento podem ser dadas por:
- 
- 
- \begin{equation}
-    \label{eq:forca}
-    \begin{tabular}{c c}
-    $q_1 = 
-        \left \{
-        \begin{tabular}{c}
-            $q_1^1$ \\
-            $q_2^1$ \\
-            $q_3^1$
-        \end{tabular}       
-        \right \}$
-        \
-    $q_1^1 = 
-        \left \{
-        \begin{tabular}{c}
-            $U_1$ \\
-            $V_1$
-        \end{tabular}       
-        \right \}   $
-        \end{tabular}   
- \end{equation}
+O padrão encontrado nas equações \ref{eq:hooke1} e \ref{eq:ohm1} pode ser generalizado para outros campos da engenharia, ciência e até mesmo administração e economia, desde que possam ser modelados por sistema de equações lineares \cite[p. 331]{burdenFaires}.
+
+A questão a ser respondida é: Como analisar o efeito global de uma ação realizada em um conjunto limitado de nós? Por exemplo, como obter o potencial elétrico nos nós $3$, $4$ e $5$, da figura \ref{fig:repMalhaGenerica}, a partir da aplicação das tensões $9V$ e $0V$ nos nós $1$ e $2$ respectivamente? Como compilar os resultados locais  para o cálculo de grandezas secundárias, como a corrente ou potência elétrica em cada elemento, por exemplo? Estas questões serão respondidas nas duas subseções seguintes.
 
 
-Similarmente, os deslocamentos podem ser dados para cada nó do elemento. Se as componentes da força na direção de x e y são dadas como U e V, as componentes da força podem ser dadas em função dessas componentes de deslocamento.
+\subsection{Equações do Elemento Discreto}
+
+Se um fenômeno que atua sobre um dado elemento $e$ é modelado por um sistema de equações lineares,  pode ser representado em sua forma matricial como:
 
  \begin{equation}
-    \label{eq:desloc}
-    \begin{tabular}{c c}
-    $u_1 = 
-        \left \{
-        \begin{tabular}{c}
-            $u_1^1$ \\
-            $u_2^1$ \\
-            $u_3^1$
-        \end{tabular}       
-        \right \}$
-        \
-    $u_1^1 = 
-        \left \{
-        \begin{tabular}{c}
-            $u_1(U_1)$ \\
-            $v_1(V_1)$
-        \end{tabular}       
-        \right \}   $
-        \end{tabular}   
- \end{equation}
-
-
-Assumindo um material isotrópico, cujo comportamento é linear elástico, a lei de Hooke fornece a equação \ref{eq:hooke}
-
- \begin{equation}
-    \label{eq:hooke}
-    \textbf{$q^1 = K^1 u^1 + f^1$}
+ \label{eq:sisLinGen}
+    \{q^e\} = [K^e] \{u^e\} + \{f^e\}
  \end{equation}
  
- O vetor $q$ representa as forças induzidas pelos deslocamentos $u$ dos nós. A matriz $K$ é a matriz de rigidez ou matriz de coeficientes do problema. $f$ é a força ou tensão inicial do elemento. Caso o estado inicial do elemento seja de equilíbrio, $f$ é igual a zero.
+O vetor $q$ é conhecido ou parcialmente conhecido. Ele é geralmente uma grandeza secundária, calculada a partir da distribuição da grandeza primária $u$ desconhecida. A matriz $K$ é a matriz de coeficientes e determina como é feita a distribuição da grandeza $u$. No exemplo de estruturas, $K$ é a matriz de rigidez, $q$ é o conjunto de forças que atuam nos nós do elemento e $u$ é o deslocamento destes nós causados por estas forças. Para circuitos elétricos, $K$ relaciona as resistências do sistema, $q$ é a corrente no elemento, originada pela diferença de potencial $u$ em seus nós. O vetor $f$ é o estado inicial do elemento. Caso este estado seja de equilíbrio (sem torção inicial ou corrente residual, por exemplo), $f$ é igual a zero \cite[p. 7]{zien}.
+
+As componentes de cada vetor da equação \ref{eq:sisLinGen} são os nós do elemento e a ordem da matriz $K$ é igual ao número de nós deste elemento. O número de nós de um elemento também é denominado \textbf{grau de liberdade} \cite[p. 5]{zien}. A equação \ref{eq:assembly} mostra a representação de um elemento com grau de liberdade  $m$. Se vista como uma matriz de adjacência, $K$ mostra como cada nó se relaciona com os demais. 
  
- Para que a representação seja adequada é necessário que sejam estabelecidas condições de compatibilidade de deslocamentos e equilíbrio.
- 
- A compatibilidade de deslocamento é necessária, uma vez que quando um nó de um elemento é deslocado em uma direção, os elementos vizinhos que compartilham o mesmo nó também são afetados com este deslocamento. Esta condição é satisfeita aos se relacionar todas as forças do sistema.
+  \begin{equation}
+     \label{eq:assembly}
+     \begin{tabular}{c c c}
+     $q^e = 
+         \left \{
+         \begin{tabular}{c}
+             $q^e_1$ \\
+             $q^e_2$ \\
+             \vdots \\
+             $q^e_m$
+         \end{tabular}       
+         \right \}$
+         \
+     $u^e = 
+         \left \{
+         \begin{tabular}{c}
+             $u_1$ \\
+             $u_2$ \\
+             \vdots \\
+             $u_m$
+         \end{tabular}       
+         \right \}   $
+         \
+         $K^e =
+         \begin{bmatrix}
+             K^e_{11}    & K^e_{12}  & \dots     & K^e_{1m} \\
+             K^e_{11}    & \ddots  & \   & \vdots \\
+             \vdots  & \vdots     & \    & \vdots \\
+             K^e_{m1}    & \dots   & \dots   & K^e_{mm} 
+         \end{bmatrix}    $      
+     \end{tabular} 
+  \end{equation}
+  
+  
+Como pode ser visto na figura \label{fig:malhaGenerica}$(b)$, cada elemento compartilha nós com seus vizinhos, de forma que, o resultado obtido no nó de um elemento deve ser compatível com os resultados obtidos nos outros elementos, para o mesmo nó. Esta condição de compatibilidade e equilíbrio será vista na subseção seguinte.
  
  \subsection{Montagem do Sistema Global}
  
@@ -583,38 +571,7 @@ Assumindo um material isotrópico, cujo comportamento é linear elástico, a lei
   
   O sistema em \ref{eq:assembly} mostra a relação entre todos os pontos do domínio para um dado elemento. é importante notar que apenas elementos adjacentes se afetam mutuamente.
   
- \begin{equation}
-    \label{eq:assembly}
-    \begin{tabular}{c c c}
-    $q^e = 
-        \left \{
-        \begin{tabular}{c}
-            $q^e_1$ \\
-            $q^e_2$ \\
-            \vdots \\
-            $q^e_m$
-        \end{tabular}       
-        \right \}$
-        \
-    $u^e = 
-        \left \{
-        \begin{tabular}{c}
-            $u_1$ \\
-            $u_2$ \\
-            \vdots \\
-            $u_m$
-        \end{tabular}       
-        \right \}   $
-        \
-        $K^e =
-        \begin{bmatrix}
-            K^e_{11}    & K^e_{12}  & \dots     & K^e_{1m} \\
-            K^e_{11}    & \ddots  & \   & \vdots \\
-            \vdots  & \vdots     & \    & \vdots \\
-            K^e_{m1}    & \dots   & \dots   & K^e_{mm} 
-        \end{bmatrix}    $      
-    \end{tabular} 
- \end{equation}
+
  
  Com os deslocamento relacionados em todos os pontos elementos do sistema,
  a condição de equilíbrio é satisfeita quando o somatório das forças causadoras de tais deslocamentos nula, ou seja, a resultante em um dado ponto $a$ vale zero.
@@ -668,7 +625,7 @@ Como foi dito anteriormente, a resolução analítica de muitos problemas físic
 A fim de contornar esta dificuldade, estratégias numéricas para a discretização do domínio e aproximação da solução foram desenvolvidas por matemáticos, engenheiros e cientistas \cite[p. 1]{zien}. 
 
 Dentre estas estratégias destacam-se o método das diferenças (MDF) finitas e o método dos elementos finitos (MEF), mostrados na figura \ref{fig:mdfFem}. O MDF consiste na discretização do domínio do problema por meio de uma grade de pontos e na aproximação de cada derivada da equação por um quociente-diferença adequado
-\cite[p. 684]{burden_faires}. Embora este método seja útil em muitos casos, se torna difícil aplicá-lo em problemas com geometria irregular ou com condições de contorno não usuais \cite[p. 4]{huebner}
+\cite[p. 684]{burdenFaires}. Embora este método seja útil em muitos casos, se torna difícil aplicá-lo em problemas com geometria irregular ou com condições de contorno não usuais \cite[p. 4]{huebner}
 
 \begin{figure}[!htb]
 \centering
