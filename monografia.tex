@@ -516,7 +516,7 @@ Se um fenômeno que atua sobre um dado elemento $e$ é modelado por um sistema d
  
 O vetor $q$ é conhecido ou parcialmente conhecido. Ele é geralmente uma grandeza secundária, calculada a partir da distribuição da grandeza primária $u$ desconhecida. A matriz $K$ é a matriz de coeficientes e determina como é feita a distribuição da grandeza $u$. No exemplo de estruturas, $K$ é a matriz de rigidez, $q$ é o conjunto de forças que atuam nos nós do elemento e $u$ é o deslocamento destes nós causados por estas forças. Para circuitos elétricos, $K$ relaciona as resistências do sistema, $q$ é a corrente no elemento, originada pela diferença de potencial $u$ em seus nós. O vetor $f$ é o estado inicial do elemento. Caso este estado seja de equilíbrio (sem torção inicial ou corrente residual, por exemplo), $f$ é igual a zero \cite[p. 7]{zien}.
 
-As componentes de cada vetor da equação \ref{eq:sisLinGen} são os nós do elemento e a ordem da matriz $K$ é igual ao número de nós deste elemento. O número de nós de um elemento também é denominado \textbf{grau de liberdade} \cite[p. 5]{zien}. A equação \ref{eq:assembly} mostra a representação de um elemento com grau de liberdade  $m$. Se vista como uma matriz de adjacência, $K$ mostra como cada nó se relaciona com os demais. 
+As componentes de cada vetor da equação \ref{eq:sisLinGen} são relativas aos nós do elemento e a ordem da matriz $K$ é igual ao número de nós deste elemento. O número de nós de um elemento também é denominado \textbf{grau de liberdade} \cite[p. 5]{zien}. A equação \ref{eq:assembly} mostra a representação de um elemento com grau de liberdade  $m$. Se vista como uma matriz de adjacência, $K$ mostra como cada nó se relaciona com os demais. 
  
   \begin{equation}
      \label{eq:assembly}
@@ -556,22 +556,14 @@ Como pode ser visto na figura \label{fig:malhaGenerica}$(b)$, cada elemento comp
  
  \subsection{Montagem do Sistema Global}
  
- Para que o conjunto de funções de força ou tensão sobre os subdomínios sejam corretamente agregadas em um sistema global, é necessário se estabelecer as condições de compatibilidade de deslocamento e de equilíbrio.
- 
- Como um nó de um elemento é compartilhado com os elementos vizinhos, a compatibilidade dos deslocamentos ocorre por meio da montagem de um sistema global. Este sistema possibilita que todos os deslocamentos estejam relacionados entre si.
- 
-  A figura \ref{fig:loc2glob} mostra a transformação dos sistemas locais para um sistema com referências globais. Como todos os nós são relacionados entre si, a matriz de rigidez é quadrada e também simétrica para o caso de materiais isotrópicos.
-  
-  \begin{figure}[!htb]
-  \centering
-  \includegraphics[scale=0.5]{figuras/temp.png}
-  \caption{}
-  \label{fig:loc2glob}
-  \end{figure}
-  
-  O sistema em \ref{eq:assembly} mostra a relação entre todos os pontos do domínio para um dado elemento. é importante notar que apenas elementos adjacentes se afetam mutuamente.
-  
+Para que uma ação local em um nó seja corretamente transmitida para os nós vizinhos, e dessa forma tenha seus efeitos refletidos em todo o sistema, é necessário relacionar todos os elementos e nós em um único sistema de equações. A equação \ref{eq:sisLinGen2} mostra um sistema global genérico. Os vetores $q$, $u$ e $f$ possuem velores referentes a todos os nós do sistema
 
+ \begin{equation}
+ \label{eq:sisLinGen2}
+    \{q\} = [K] \{u\} + \{f\}
+ \end{equation}
+
+Enquanto as equações no nível elementar, como a equação \ref{eq:sisLinGen}, apresentam os nós refeciados localmente para cada elemento, no sistema global cada nó passa a ser representado com sua referência global. As influências de diferentes elementos em um mesmo nó 
  
  Com os deslocamento relacionados em todos os pontos elementos do sistema,
  a condição de equilíbrio é satisfeita quando o somatório das forças causadoras de tais deslocamentos nula, ou seja, a resultante em um dado ponto $a$ vale zero.
